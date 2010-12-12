@@ -43,36 +43,36 @@ public class Loader extends Activity {
 	private static final int LOAD_ERR_LOCAL = LOAD_ERR_REMOTE + 1;
 	private static final int LOAD_COMPLET = LOAD_ERR_LOCAL + 1;
 	private static final int LOAD_NEW_VERSION = LOAD_COMPLET + 1;
-	private static final int LOAD_OK = LOAD_NEW_VERSION + 1;
+//	private static final int LOAD_OK = LOAD_NEW_VERSION + 1;
 	private TextView loadTxt;
 //	private View loadView;
 	private Button b_enter;
 //	private Button b_more;
 	
 
-	/**
-	 * 是否需要远程获取图片
-	 */
-	private static boolean isRemote = true;
-	/**
-	 * json数据中的tag名，是一个String类型的key
-	 */
-	private static String jsonTag = "";
-	/**
-	 * json数据中的cate名，是一个String类型的key
-	 */
-	private static String jsonCate = "";
-	/**
-	 * json数据中的页码标识，是一个int类型的key
-	 */
-	private static int jsonPage = 1;
+//	/**
+//	 * 是否需要远程获取图片
+//	 */
+//	private static boolean isRemote = true;
+//	/**
+//	 * json数据中的tag名，是一个String类型的key
+//	 */
+//	private static String jsonTag = "";
+//	/**
+//	 * json数据中的cate名，是一个String类型的key
+//	 */
+//	private static String jsonCate = "";
+//	/**
+//	 * json数据中的页码标识，是一个int类型的key
+//	 */
+//	private static int jsonPage = 1;
 	
 	
 	
 	/**
 	 * json根节点
 	 */
-	private static JSONObject json;
+	private static JSONObject jsonRoot;
 	
 	/**
 	 * 配置文件json
@@ -82,7 +82,7 @@ public class Loader extends Activity {
 	/**
 	 * 图片索引的json String
 	 */
-	private static String jsonStr;
+	private static String indexJsonStr;
 	
 	/**
 	 * ini的本地JSON文件名
@@ -92,8 +92,8 @@ public class Loader extends Activity {
 	/**
 	 * 远程图片路径的前缀
 	 */
-	private static String remotePrePath = "http://202.102.29.201/";
-	private static String remoteIndex = "http://202.102.29.201/orion/fw_index.htm";
+	private static String remotePrePath = "http://202.102.113.204/";
+	private static String remoteIndex = "http://202.102.113.204/orion/fw_index.htm";
 	private static String stateTxt = "ok";
 	
 	private static String newVersionTxt = "New version is now available!Check it now?";
@@ -128,7 +128,7 @@ public class Loader extends Activity {
 			case LOAD_COMPLET:
 				//loadTxt.setText("完成数据载入.");
 				try {
-					loadTxt.setText(json.getString("update"+ID.getLANG()));
+					loadTxt.setText(jsonRoot.getString("update"+ID.getLANG()));
 					b_enter.setVisibility(View.VISIBLE);
 					
 					/*
@@ -151,15 +151,15 @@ public class Loader extends Activity {
 					*/
 					
 				} catch (JSONException e) {
-					Log.e(TAG, "json update parse error.",e);
+					Log.e(TAG, "jsonRoot update parse error.",e);
 				}
 				break;
 			
 		/*	case LOAD_SAVE_OK:
 				try {
-					loadTxt.setText("图库更新于:"+json.getString("update"));
+					loadTxt.setText("图库更新于:"+jsonRoot.getString("update"));
 				} catch (JSONException e) {
-					Log.e(TAG, "json update parse error.",e);
+					Log.e(TAG, "jsonRoot update parse error.",e);
 				}
 				b_enter.setVisibility(View.VISIBLE);
 				break;*/
@@ -194,7 +194,7 @@ public class Loader extends Activity {
         b_enter.setOnClickListener(new OnClickListener(){
 			public void onClick(View arg0) {
 				Intent toMain = new Intent();
-				toMain.putExtra("json", jsonStr);//(bundle);
+				toMain.putExtra("jsonRoot", indexJsonStr);//(bundle);
 				toMain.putExtra("lang", ID.getLANG());//(bundle);
 				toMain.setClass(Loader.this, K99KWall.class);
 				startActivity(toMain);
@@ -224,7 +224,6 @@ public class Loader extends Activity {
 				if (iniStr.equals("")) {
 					Log.w(TAG, "Failed to get ini from files.");
 					//首次运行,本机无ini,则从raw读取
-					//mHandler.sendEmptyMessage(LOAD_ERR_LOCAL);
 					iniStr = IO.readRaw(Loader.this,R.raw.fw_ini);
 					iniJson = new JSONObject(iniStr);
 				}else{
@@ -249,7 +248,6 @@ public class Loader extends Activity {
 				for (int i = 0; i < jarr.length(); i++) {
 					String serverOne = jarr.getString(i);
 					Log.d(TAG, "TRY TO GET INI FROM:"+serverOne);
-					//String remoteIni = getRemoteTxt(serverOne+INI_FILE_NAME);
 					String remoteIni = NetWork.postUrl(serverOne+INI_FILE_NAME,ID.getFullJsonEnc());
 					//成功读取
 					if (!remoteIni.equals("")) {
@@ -257,29 +255,21 @@ public class Loader extends Activity {
 						remotePrePath = serverOne;
 						Log.d(TAG, "download remote ini OK:"+remotePrePath+INI_FILE_NAME);
 						JSONObject remoteIniJson = new JSONObject(remoteIni);
-						//判断服务器状态 
+						//判断服务器状态 ,非ok的服务器跳过
 						stateTxt = remoteIniJson.getString("state");
 						if (!stateTxt.equals("ok")) {
 							Log.w(TAG, "download remote ini failed:"+remotePrePath+INI_FILE_NAME);
 							continue;
-							//提示服务器状态非正常
-//							mHandler.sendEmptyMessage(LOAD_ERR_REMOTE);
-//							return;
 						}
 						//判断程序版本
-//						try {
-//							int currentVersion = Loader.this.getPackageManager().getPackageInfo(Loader.this.getPackageName(), PackageManager.GET_ACTIVITIES).versionCode;
-							Log.d(TAG, "currentVersion:"+ID.getAppVer());
-							if (ID.getAppVer() < remoteIniJson.getDouble("apkVersion")) {
-								//带上语言参数
-								newApkUrl = remoteIniJson.getString("newAPK")+"?lang="+ID.getLANG();
-								newVersionTxt = remoteIniJson.getString("newTxt"+ID.getLANG());
-								//提示是否下载新版本
-								mHandler.sendEmptyMessage(LOAD_NEW_VERSION);
-							}
-//						} catch (NameNotFoundException e) {
-//							Log.e(TAG, "current apk Version read error!", e);
-//						}
+						Log.d(TAG, "currentVersion:"+ID.getAppVer());
+						if (ID.getAppVer() < remoteIniJson.getDouble("apkVersion")) {
+							//带上语言参数和包名
+							newApkUrl = remoteIniJson.getString("newAPK")+"?lang="+ID.getLANG()+"&pk="+this.getClass().getPackage();
+							newVersionTxt = remoteIniJson.getString("newTxt"+ID.getLANG());
+							//提示是否下载新版本
+							mHandler.sendEmptyMessage(LOAD_NEW_VERSION);
+						}
 						//判断配置文件版本
 						int remoteIniJsonVersion  = remoteIniJson.getInt("version");
 						Log.d(TAG, "remoteIniJsonVersion:"+remoteIniJsonVersion);
@@ -307,35 +297,23 @@ public class Loader extends Activity {
 				Log.d(TAG, "ini version:"+iniJson.getString("version") +"\n remotePrePath:"+remotePrePath+"\n remoteIndexPath:"+remoteIndex);
 				//----------------------------------				
 				//尝试获取远程index
-				String indexStr = NetWork.getUrlContent(remoteIndex);
-				if (indexStr.equals("")) {
+				indexJsonStr = NetWork.getUrlContent(remoteIndex);
+				if (indexJsonStr.equals("")) {
 					//无法获取远程index
 					mHandler.sendEmptyMessage(LOAD_ERR_REMOTE);
 					return;
-				}else{
-					jsonStr = indexStr;
-					jsonTag = "remote";
-		         	jsonCate = "hot";
-		         	jsonPage = 1;
-		         	isRemote = true;
-		         	Log.d(TAG, "Get the remote index OK!");
 				}
-				json = new JSONObject(jsonStr);
-				Log.d(TAG, "index version:"+json.getString("version"));
-				//mHandler.sendEmptyMessage(LOAD_COMPLET);
-				//保存到本机files下
-				//writeFile(Loader.this,remoteIndex,indexStr);
-				//mHandler.sendEmptyMessage(LOAD_SAVE_OK);
+//					jsonTag = "remote";
+//		         	jsonCate = "hot";
+//		         	jsonPage = 1;
+//		         	isRemote = true;
+		        Log.d(TAG, "Get the remote index OK!");
+				jsonRoot = new JSONObject(indexJsonStr);
+				Log.d(TAG, "index version:"+jsonRoot.getString("version"));
 			} catch (JSONException e) {
 				Log.e(TAG, "JSON file parse error.",e);
 				mHandler.sendEmptyMessage(LOAD_ERR_REMOTE);
 				return;
-				/*try {
-					json = new JSONObject(K99KWall.readRaw(Loader.this,R.raw.index));
-				} catch (JSONException e1) {
-					Log.e(TAG, "JSON local file parse error.",e);
-					Loader.this.finish();
-				}*/
 			}
 			
 			//loadTxt.setVisibility(View.GONE);
@@ -352,11 +330,11 @@ public class Loader extends Activity {
 		if(newConfig.orientation==Configuration.ORIENTATION_LANDSCAPE){  
 		    //横向  
 		    //setContentView(R.layout.file_list_landscape); 
-			Log.i(TAG,"to land...");
+			//Log.i(TAG,"to land...");
 		}else{  
 		    //竖向  
 		    //setContentView(R.layout.file_list);  
-			Log.i(TAG,"to port...");
+			//Log.i(TAG,"to port...");
 		}  
 	}
 	

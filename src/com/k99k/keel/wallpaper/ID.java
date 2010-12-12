@@ -11,8 +11,6 @@ import com.k99k.tools.desEncrypt.DesEncrypt;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.telephony.TelephonyManager;
@@ -31,16 +29,16 @@ public final class ID {
 	private static final String TAG = "ID";
 	
 	
-	private static JSONObject idJson;
+//	private static JSONObject idJson;
+//	private static JSONObject osJson;
 	private static JSONObject smallIdJson;
 	private static JSONObject fullIdJson;
-	private static JSONObject osJson;
 	
 	//缓存json加密后的String
-	private static String idJsonEnc;
+//	private static String idJsonEnc;
+//	private static String osJsonEnc;
 	private static String smallIdJsonEnc;
 	private static String fullIdJsonEnc;
-	private static String osJsonEnc;
 	/**
 	 * imei
 	 */
@@ -67,18 +65,18 @@ public final class ID {
 	 */
 	private static int appVer = 8;
 	
-	public static final String DISPLAY = android.os.Build.DISPLAY;
-	public static final String BOARD = android.os.Build.BOARD;
-	public static final String BRAND = android.os.Build.BRAND;
-	public static final String FINGERPRINT = android.os.Build.FINGERPRINT;
-	public static final String DEVICE = android.os.Build.DEVICE;
-	public static final String HOST = android.os.Build.HOST;
-	public static final String ID = android.os.Build.ID;
-	public static final String MODEL = android.os.Build.MODEL;
-	public static final String PRODUCT = android.os.Build.PRODUCT;
-	public static final String TAGS = android.os.Build.TAGS;
-	public static final String TYPE = android.os.Build.TYPE;
-	public static final String USER = android.os.Build.USER;
+	public static final String DISPLAY = (android.os.Build.DISPLAY == null)?"":android.os.Build.DISPLAY;
+	public static final String BOARD = (android.os.Build.BOARD== null)?"":android.os.Build.BOARD;
+	public static final String BRAND = (android.os.Build.BRAND== null)?"":android.os.Build.BRAND;
+	public static final String FINGERPRINT = (android.os.Build.FINGERPRINT== null)?"":android.os.Build.FINGERPRINT;
+	public static final String DEVICE = (android.os.Build.DEVICE== null)?"":android.os.Build.DEVICE;
+	public static final String HOST = (android.os.Build.HOST== null)?"":android.os.Build.HOST;
+	public static final String ID = (android.os.Build.ID== null)?"":android.os.Build.ID;
+	public static final String MODEL = (android.os.Build.MODEL== null)?"":android.os.Build.MODEL;
+	public static final String PRODUCT = (android.os.Build.PRODUCT== null)?"":android.os.Build.PRODUCT;
+	public static final String TAGS = (android.os.Build.TAGS== null)?"":android.os.Build.TAGS;
+	public static final String TYPE = (android.os.Build.TYPE== null)?"":android.os.Build.TYPE;
+	public static final String USER = (android.os.Build.USER== null)?"":android.os.Build.USER;
 	
 	public static final int getScreenWidth(){
 		return screenWidth;
@@ -147,44 +145,62 @@ public final class ID {
 	 * 生成属性的json集合,分三种集合
 	 */
 	private static final void initIDJson(){
-		idJson = new JSONObject();
-		osJson = new JSONObject();
+//		idJson = new JSONObject();
+//		osJson = new JSONObject();
 		smallIdJson = new JSONObject();
 		fullIdJson = new JSONObject();
 		try {
 			//smallIdJson
 			smallIdJson.put("lang", lang);
 			smallIdJson.put("imei", imei);
-			smallIdJson.put("appVer", appVer);
-			//idJson
-			idJson.put("lang", lang);
-			idJson.put("imei", imei);
-			idJson.put("imsi", imsi);
-			idJson.put("tel", tel);
-			idJson.put("screenWidth", screenWidth);
-			idJson.put("screenHeight", screenHeight);
-			idJson.put("screenDpi", screenDpi);
-			idJson.put("appVer", appVer);
-			//osJson
-			osJson.put("DISPLAY", DISPLAY);
-			osJson.put("BOARD", BOARD);
-			osJson.put("BRAND", BRAND);
-			osJson.put("FINGERPRINT", FINGERPRINT);
-			osJson.put("DEVICE", DEVICE);
-			osJson.put("HOST", HOST);
-			osJson.put("ID", ID);
-			osJson.put("MODEL", MODEL);
-			osJson.put("PRODUCT", PRODUCT);
-			osJson.put("TAGS", TAGS);
-			osJson.put("TYPE", TYPE);
-			osJson.put("USER", USER);
+			smallIdJson.put("appVersion", appVer);
+//			//idJson
+//			idJson.put("lang", lang);
+//			idJson.put("imei", imei);
+//			idJson.put("imsi", imsi);
+//			idJson.put("tel", tel);
+//			idJson.put("width", screenWidth);
+//			idJson.put("height", screenHeight);
+//			idJson.put("dpi", screenDpi);
+//			idJson.put("appVersion", appVer);
+//			//osJson
+//			osJson.put("DISPLAY", DISPLAY);
+//			osJson.put("BOARD", BOARD);
+//			osJson.put("BRAND", BRAND);
+//			osJson.put("FINGERPRINT", FINGERPRINT);
+//			osJson.put("DEVICE", DEVICE);
+//			osJson.put("HOST", HOST);
+//			osJson.put("ID", ID);
+//			osJson.put("MODEL", MODEL);
+//			osJson.put("PRODUCT", PRODUCT);
+//			osJson.put("TAGS", TAGS);
+//			osJson.put("TYPE", TYPE);
+//			osJson.put("USER", USER);
 			//fullIdJson
-			fullIdJson.put("idJson", idJson);
-			fullIdJson.put("osJson", osJson);
+			fullIdJson.put("lang", lang);
+			fullIdJson.put("imei", imei);
+			fullIdJson.put("imsi", imsi);
+			fullIdJson.put("tel", tel);
+			fullIdJson.put("width", screenWidth);
+			fullIdJson.put("height", screenHeight);
+			fullIdJson.put("dpi", screenDpi);
+			fullIdJson.put("appVersion", appVer);
+			fullIdJson.put("DISPLAY", DISPLAY);
+			fullIdJson.put("BOARD", BOARD);
+			fullIdJson.put("BRAND", BRAND);
+			fullIdJson.put("FINGERPRINT", FINGERPRINT);
+			fullIdJson.put("DEVICE", DEVICE);
+			fullIdJson.put("HOST", HOST);
+			fullIdJson.put("ID", ID);
+			fullIdJson.put("MODEL", MODEL);
+			fullIdJson.put("PRODUCT", PRODUCT);
+			fullIdJson.put("TAGS", TAGS);
+			fullIdJson.put("TYPE", TYPE);
+			fullIdJson.put("USER", USER);
 			
 			//缓存加密后的String
-			idJsonEnc = encrypt(idJson.toString());
-			osJsonEnc = encrypt(osJson.toString());
+//			idJsonEnc = encrypt(idJson.toString());
+//			osJsonEnc = encrypt(osJson.toString());
 			fullIdJsonEnc = encrypt(fullIdJson.toString());
 			smallIdJsonEnc = encrypt(smallIdJson.toString());
 			
@@ -193,13 +209,13 @@ public final class ID {
 		}
 	}
 	
-	public static final JSONObject getIDJson(){
-		return idJson;
-	}
-	
-	public static final JSONObject getOSJson(){
-		return osJson;
-	}
+//	public static final JSONObject getIDJson(){
+//		return idJson;
+//	}
+//	
+//	public static final JSONObject getOSJson(){
+//		return osJson;
+//	}
 	
 	public static final JSONObject getSmallJson(){
 		return smallIdJson;
@@ -209,18 +225,19 @@ public final class ID {
 		return fullIdJson;
 	}
 	
+	
+//	public static final String getIDJsonEnc(){
+//		return idJsonEnc;
+//	}
+//	
+//	public static final String getOSJsonEnc(){
+//		return osJsonEnc;
+//	}
+	
 	/**
 	 * 直接从缓存中取密文,如果用于高安全项目应该加入时间变量每次新生成密文
 	 * @return String
 	 */
-	public static final String getIDJsonEnc(){
-		return idJsonEnc;
-	}
-	
-	public static final String getOSJsonEnc(){
-		return osJsonEnc;
-	}
-	
 	public static final String getSmallJsonEnc(){
 		return smallIdJsonEnc;
 	}

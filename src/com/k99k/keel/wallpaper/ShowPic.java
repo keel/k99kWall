@@ -5,7 +5,6 @@ package com.k99k.keel.wallpaper;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -323,11 +322,13 @@ public class ShowPic extends Activity {
 
     private final String getRemoteTxt(String url,String type){
     	String str = "";
-    	HashMap<String,String> paras = new HashMap<String,String>();
-    	paras.put("wall", ID.getSmallJsonEnc());
-    	paras.put("type", type);
-    	paras.put("pic_oid", pic_oid);
-    	str = NetWork.postUrl(url, paras, 3000, false);
+    	String[] keys = new String[]{"wall","type","pic_oid"};
+    	String[] values = new String[]{ID.getSmallJsonEnc(),type,pic_oid};
+//    	HashMap<String,String> paras = new HashMap<String,String>();
+//    	paras.put("wall", ID.getSmallJsonEnc());
+//    	paras.put("type", type);
+//    	paras.put("pic_oid", pic_oid);
+    	str = NetWork.postUrl(url, keys,values, 3000, false);
     	/*
     	
 		try {
@@ -618,9 +619,9 @@ public class ShowPic extends Activity {
 		@Override
 		public void run() {
 			try {
-				HashMap<String,String> m = new HashMap<String,String>();
-				final Bitmap b = NetWork.getRemotePicWithWallProp(picUrl,m);
-				pic_oid = m.get("pic_oid");
+				String[] pic_oid_arr = new String[1];
+				final Bitmap b = NetWork.getRemotePicWithWallProp(picUrl,pic_oid_arr);
+				pic_oid = pic_oid_arr[0];
 				picHandler.post(new Runnable() {
 					public void run() {
 						if (b == null) {

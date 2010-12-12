@@ -12,13 +12,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Iterator;
 
 import android.content.Context;
 import android.content.Intent;
@@ -134,7 +130,7 @@ public final class NetWork {
 		}
 	}
 
-	public static final Bitmap getRemotePicWithWallProp(String url,HashMap<String,String> headers) {
+	public static final Bitmap getRemotePicWithWallProp(String url,String[] headers) {
 		Bitmap bm = null;
 		try {
 			URL aURL = new URL(url);
@@ -149,7 +145,8 @@ public final class NetWork {
 			// 获取图片id,判断是否已加星(根据同步后的本地加星列表)
 			String oid = conn.getHeaderField("pic_oid");
 			if (headers != null && oid != null && oid.length() > 0) {
-				headers.put("pic_oid", oid);
+//				headers.put("pic_oid", oid);
+				headers[0] = oid;
 			}
 			final BufferedInputStream in = new BufferedInputStream(conn
 					.getInputStream(), IO_BUFFER_SIZE);
@@ -257,7 +254,7 @@ public final class NetWork {
 	 */
 	public final static String postUrlByEncrypt(String url,String postValue){
 		String v = ID.encrypt(postValue);
-		return NetWork.postUrl(url, "wall", v, 3000, false);
+		return NetWork.postUrl(url, v);
 	}
 	
 	/**
@@ -270,14 +267,14 @@ public final class NetWork {
 		return NetWork.postUrl(url, "wall", postValue, 3000, false);
 	}
 	
-	/**
-	 * post数据到一个url,并获取反回的String,所有数据均使用utf-8编码
+	/*
+	 * post数据到一个url,并获取反回的String,所有数据均使用utf-8编码,本应用用不到
 	 * @param url Url地址
 	 * @param paras Map形式的参数集
 	 * @param timeOut 超时毫秒数
 	 * @param breakLine 是否加入换行符
 	 * @return 返回的结果页内容
-	 */
+	
 	public final static String postUrl(String url,HashMap<String,String> paras,int timeOut,boolean breakLine){
 		 // Construct data
 		StringBuilder sb;
@@ -297,28 +294,53 @@ public final class NetWork {
 		}
 	    return NetWork.postUrl(url, data, timeOut, breakLine);
 	}
+	 */
+	
 	
 	/**
 	 * post数据到一个url,并获取反回的String,此方法仅适用于单个参数,所有数据均使用utf-8编码
 	 * @param url Url
-	 * @param key 参数名
-	 * @param value 参数值
+	 * @param key 参数名,注意不带urlEncode功能,使用改进过的加密算法后无需URLencode
+	 * @param value 参数值,注意不带urlEncode功能,使用改进过的加密算法后无需URLencode
 	 * @param timeOut 超时毫秒数
 	 * @param breakLine 是否加入换行符
 	 * @return 返回的结果页内容
 	 */
-	public final static String postUrl(String url,String key,String value,int timeOut,boolean breakLine){
+	private final static String postUrl(String url,String key,String value,int timeOut,boolean breakLine){
 		  // Construct data
-		StringBuilder sb;
+		StringBuilder sb = new StringBuilder();
 		String data = "";
-		try {
-			sb = new StringBuilder();
-			sb.append(URLEncoder.encode(key, "UTF-8")).append("=");
-			sb.append(URLEncoder.encode(value, "UTF-8"));
+//		try {
+//			sb.append(URLEncoder.encode(key, "UTF-8")).append("=");
+//			sb.append(URLEncoder.encode(value, "UTF-8"));
+			sb.append(key).append("=");
+			sb.append(value).append("&");
 			data = sb.toString();
-		} catch (UnsupportedEncodingException e) {
-			Log.e(TAG,"postUrl error!" ,e);
+//		} catch (UnsupportedEncodingException e) {
+//			Log.e(TAG,"postUrl error!" ,e);
+//		}
+	    return NetWork.postUrl(url, data, timeOut, breakLine);
+	}
+	
+	/**
+	 * post数据到一个url,并获取反回的String,此方法仅适用于单个参数,所有数据均使用utf-8编码
+	 * @param url Url
+	 * @param key 参数名,注意不带urlEncode功能,使用改进过的加密算法后无需URLencode
+	 * @param value 参数值,注意不带urlEncode功能,使用改进过的加密算法后无需URLencode
+	 * @param timeOut 超时毫秒数
+	 * @param breakLine 是否加入换行符
+	 * @return 返回的结果页内容
+	 */
+	public final static String postUrl(String url,String[] key,String[] value,int timeOut,boolean breakLine){
+		  // Construct data
+		StringBuilder sb = new StringBuilder();
+		String data = "";
+		for (int i = 0; i < key.length; i++) {
+			sb.append(key).append("=");
+			sb.append(value).append("&");
 		}
+		sb.deleteCharAt(sb.length()-1);
+		data = sb.toString();
 	    return NetWork.postUrl(url, data, timeOut, breakLine);
 	}
 	
