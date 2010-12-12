@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+android:background="@color/purple" android:id="@+id/starbttitle" 
+android:layout_height="wrap_content" android:layout_width="wrap_content" 
+android:layout_marginBottom="2dip">
+<TextView android:layout_width="wrap_content" 
+android:layout_height="wrap_content" android:id="@+id/title1" 
+android:minWidth="200dip" android:text="Order by:" 
+android:paddingLeft="10dip" android:paddingBottom="5dip" 
+android:paddingTop="5dip"></TextView>
+</LinearLayout>

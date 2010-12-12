@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="lang">JP</string>
+    <string name="app_name">ブティック壁紙コレクション</string>
+	<string name="title">ブティック壁紙コレクション</string>
+	<string name="about">
+ブティック壁紙コレクション  ver2.2 \n
+開発者:Keel \n
+Email:keel.sike@gmail.com \n\n
+概要:壁紙の選択は、絶対にコレクションのレベルの画像を、完全に無料です,大画面解像度は、画像の品質を確保するために適しています.
+	</string>
+	<string name="help">
+*壁紙の選択は、絶対にコレクションのレベルの画像を、完全に無料です。 \n\n
+*大画面解像度は、画像の品質を確保するために適しています; \n\n
+*サポートの水平および垂直方向の画面が表示さブラウジングの2種類の垂直方向のときに画面を最大限に画像の水平方向のスクロールの効果を得ることができる大きな画像を表示; \n\n
+*画像のインデックスが自動的に更新された; \n\n
+*画像をSDカードをサポートするために保存され、また、直接、壁紙、高速保存を現実のように設定することができます。 \n\n
+*ご質問やご提案,email：keel.sike@gmail.com
+	</string>
+	<string name="loadPicError">イメージのロードに失敗,あなたのネットワーク接続を確認.</string>
+	<string name="netError">ネットワーク接続に失敗しました,あなたのネットワーク接続を確認.</string>
+	<string name="err_synstar">同期の星が失敗しました, あなたのネットワーク接続を確認.</string>
+	<string name="star_add_ok">成功の星を追加する!</string>
+	<string name="star_add_err">スターが増加に失敗しました, あなたのネットワーク接続を確認.</string>
+	<string name="star_del_ok">成功の星を削除する!</string>
+	<string name="star_del_err">スターをはずすに失敗しました, あなたのネットワーク接続を確認.</string>
+	<string name="proc_diag_title">Loading...</string>
+	<string name="proc_diag_text">してください数秒待ってください</string>
+	<string name="menu_about">について</string>
+	<string name="menu_help">ヘルプ</string>
+	<string name="menu_exit">終了</string>
+	<string name="msg_exit_ask">終了の確認？</string>
+	<string name="msg_exit">終了</string>
+	<string name="msg_cancel">キャンセル</string>
+	<string name="msg_last_page">これは最後のページです!</string>
+	<string name="msg_first_page">これは、最初のページです!</string>
+	<string name="txt_loading">にアクセスするサーバーのデータ...</string>
+	<string name="txt_no_net">ネットワークに接続できません.</string>
+	<string name="err_no_net">残念に思う,ネットワークに接続できません.</string>
+	<string name="err_json">インデックスの解析エラー!終了後、次に再試行!</string>
+	<string name="msg_newver">をダウンロードして、新しいバージョン?</string>
+<string name="menu_setwall">壁紙として設定</string>
+<string name="menu_save">保存する</string>
+<string name="menu_back">後ろの</string>
+	<string name="msg_setOK">成功設定壁紙として!</string>
+	<string name="msg_save_confirm">セット壁紙今？</string>
+	<string name="msg_wait">してください画像を待つダウンロードされます</string>
+	<string name="msg_setErr">設定の壁紙に失敗しました!</string>
+<string name="msg_loadPicErr">画像を読み込みに失敗しました!</string>
+<string name="msg_nocard">挿入してくださいのSD card!</string>
+<string name="msg_saveErrMsg">保存に失敗しました!挿入してくださいのSD card!</string>
+<string name="msg_saveOKMsg">あなたは [wallpaper] ディレクトリ内の画像を見つけることができます.</string>
+<string name="msg_saveOK">保存に成功!</string>
+<string name="msg_saveErr">保存に失敗しました!</string>
+
+<string name="bt_new">最新</string>
+<string name="bt_cate">カテゴリ</string>
+<string name="bt_random">ランダム</string>
+<string name="bt_next">次の</string>
+<string name="bt_pre">前へ</string>
+<string name="bt_enter">  Enter  </string>
+<string name="bt_back">後ろの</string>
+<string name="bt_save">保存する</string>
+<string name="bt_set">壁紙として設定</string>
+
+<string name="txt_loadin">Loading...</string>
+</resources>

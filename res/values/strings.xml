@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="lang">EN</string>
+    <string name="app_name">Featured Wallpapers</string>
+	<string name="title">Featured Wallpapers</string>
+	<string name="about">
+Featured Wallpapers ver2.2 \n
+Author:Keel \n
+Contact:keel.sike@gmail.com \n\n
+Info:These featured Wallpapers were carefully chosen and meticulously prepared to look great for your android handset.
+	</string>
+	<string name="help">
+ 1.This app need an available Internet connection, and access to SD card.\n\n
+ 2.For high-resolution screen, ensure the picture quality.\n\n
+ 3.Horizontal scrolling for large preview. \n\n
+ 4.Automatic Update.\n\n
+ 5.For more informations,mail to: keel.sike@gmail.com , thanks.
+	</string>
+	<string name="loadPicError">One picture load faild, please check the internet connection and try again.</string>
+	<string name="netError">Can not get the remote datas, please check the internet connection and try again.</string>
+	<string name="err_synstar">Synchronize my stars failed, please check the internet connection and try again. </string>
+	<string name="star_add_ok">Add Star OK!</string>
+	<string name="star_add_err">Add Star failed, please check the internet connection and try again. </string>
+	<string name="star_del_ok">Remove Star OK!</string>
+	<string name="star_del_err">Remove Star failed, please check the internet connection and try again. </string>
+	<string name="proc_diag_title">Loading</string>
+	<string name="proc_diag_text">Please wait a few seconds.</string>
+	<string name="menu_about">about</string>
+	<string name="menu_help">help</string>
+	<string name="menu_exit">exit</string>
+	<string name="msg_exit_ask">Are you sure to exit?</string>
+	<string name="msg_exit">exit</string>
+	<string name="msg_cancel">cancel</string>
+	<string name="msg_last_page">This is the last page!</string>
+	<string name="msg_first_page">This is the first page!</string>
+	<string name="txt_loading">Get the remote datas...</string>
+	<string name="txt_no_net">Can not connect to the network.</string>
+	<string name="err_no_net">Sorry,you need to get a internet connection.</string>
+	<string name="err_json">Get index failed!Please exit and start again!</string>
+	<string name="msg_newver">New version is now available!Check it now?</string>
+	<string name="menu_setwall">set as wallpaper</string>
+	<string name="menu_save">save</string>
+	<string name="menu_back">back</string>	
+	
+	<string name="msg_setOK">Set wallpaper successfully!</string>
+	<string name="msg_save_confirm">Set as wallpaper now?</string>
+	<string name="msg_wait">Please wait for the picture downloaded.</string>
+	<string name="msg_setErr">Set wallpaper failed!</string>
+<string name="msg_loadPicErr">oh?Failed to load the picture,back and try again!</string>
+<string name="msg_nocard">Please insert the SD card!</string>
+<string name="msg_saveErrMsg">Failed to save!Please insert the SD card!</string>
+<string name="msg_saveOKMsg">You can find the pictures in [wallpaper] directory in SD card or press the center button to set as wallpaper now.</string>
+<string name="msg_saveOK">Saved successfully!</string>
+<string name="msg_saveErr">Save to SD card error!</string>
+
+<string name="bt_new">Newest</string>
+<string name="bt_cate">Categories</string>
+<string name="bt_random">Shuffle</string>
+<string name="bt_next">next</string>
+<string name="bt_pre">pre</string>
+<string name="bt_enter">  Enter  </string>
+<string name="bt_back">Back</string>
+<string name="bt_save">Save</string>
+<string name="bt_set">Set as wallpaper</string>
+
+<string name="txt_loadin">Loading...</string>
+
+</resources>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="lang">CN</string>
+    <string name="app_name">精品壁纸收藏阁</string>
+	<string name="title">精品壁纸收藏阁</string>
+	<string name="about">
+ 精品壁纸收藏阁  ver2.2 \n
+作者:Keel \n
+联系方式:keel.sike@gmail.com \n\n
+说明:本壁纸库专为高分辨率大屏android手机设计，兼容1.5及以上版本。图片经过精细筛选，大家共赏，如有问题或建议，请发邮件到keel.sike@gmail.com，谢谢支持！
+	</string>
+	<string name="help">
+ 1.程序运行需要一个可用的互联网连接，需要访问SD卡，如果无法保存请检查SD卡是否正常，并且手机处于非USB连接状态；\n\n
+ 2.查看大图时可横向滚动图片，在竖屏状态可看到最大的图片区域；\n\n
+ 3.图片索引会在每次启动时更新，更新时间可在载入界面看到；\n\n
+ 4.所有图片均保存到SD存储卡的wallpaper目录，可访问此目录查看图片并设置为壁纸；\n\n
+ 5.本版本专为中文用户提供，提供快速的下载速度；\n\n
+ 6.如有问题或建议，请发邮件到keel.sike@gmail.com，谢谢支持！
+	</string>
+	<string name="loadPicError">载入某个图片失败,请检查网络连接.</string>
+	<string name="netError">网络连接失败,请检查网络连接.</string>
+	<string name="err_synstar">同步我的星星失败, 请检查网络连接并重试. </string>
+	<string name="star_add_ok">为此图片加星成功!</string>
+	<string name="star_add_err">加星失败, 请检查网络连接并重试.</string>
+	<string name="star_del_ok">取消加星成功!</string>
+	<string name="star_del_err">取消加星失败, 请检查网络连接并重试. </string>
+	<string name="proc_diag_title">载入中...</string>
+	<string name="proc_diag_text">请稍候几秒.</string>
+	<string name="menu_about">关于</string>
+	<string name="menu_help">帮助</string>
+	<string name="menu_exit">退出</string>
+	<string name="msg_exit_ask">确认退出程序吗?</string>
+	<string name="msg_exit">退出</string>
+	<string name="msg_cancel">取消</string>
+	<string name="msg_last_page">已达最后一页!</string>
+	<string name="msg_first_page">已达第一页!</string>
+	<string name="txt_loading">获取服务器数据...</string>
+	<string name="txt_no_net">无法连接网络.</string>
+	<string name="err_no_net">对不起，需要先建立网络连接.</string>
+	<string name="err_json">解析索引数据错误!请退出后重试!</string>
+	<string name="msg_newver">有新版本下载!是否现在查看?</string>
+	<string name="menu_setwall">设为壁纸</string>
+	<string name="menu_save">保存</string>
+	<string name="menu_back">返回</string>
+	<string name="msg_setOK">设置壁纸成功!</string>
+	<string name="msg_save_confirm">确定要设置为壁纸吗?</string>
+	<string name="msg_wait">请等待图片下载完成并确保sd卡可用</string>
+	<string name="msg_setErr">设置壁纸出错!</string>
+<string name="msg_loadPicErr">哦?图片载入失败了,返回再试吧!</string>
+<string name="msg_nocard">请插入sd卡!</string>
+<string name="msg_saveErrMsg">保存文件出错!请确保sd卡正常插入!</string>
+<string name="msg_saveOKMsg">您可以访问SD卡的wallpaper目录查看图片并设置为壁纸。</string>
+<string name="msg_saveOK">成功保存文件到sd卡!</string>
+<string name="msg_saveErr">保存文件错误!</string>
+
+<string name="bt_new">最新</string>
+<string name="bt_cate">类别</string>
+<string name="bt_random">随机</string>
+<string name="bt_next">下页</string>
+<string name="bt_pre">上页</string>
+<string name="bt_enter">  进入  </string>
+<string name="bt_back">返回</string>
+<string name="bt_save">保存</string>
+<string name="bt_set">设置为壁纸</string>
+
+<string name="txt_loadin">载入中...</string>
+</resources>

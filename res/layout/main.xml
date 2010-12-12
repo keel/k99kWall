@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" style="@style/BlackTheme">
+
+<LinearLayout android:layout_width="fill_parent" android:id="@+id/Top" android:layout_alignParentTop="true" android:orientation="horizontal" android:layout_height="wrap_content" android:visibility="visible" android:background="@drawable/wallupbg" android:gravity="left">
+	<Button android:id="@+id/b_cate"  android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/BlackTheme.upButton" android:text="Categories" android:minWidth="60dip"></Button>
+    <Button android:id="@+id/b_new" android:text="Newest" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/BlackTheme.upButton" android:minWidth="60dip"></Button>
+	<Button android:id="@+id/b_random" android:text="Random" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/BlackTheme.upButton" android:minWidth="60dip"></Button>
+	<Button android:id="@+id/b_empty" android:text="" android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="fill_parent" android:background="@null"></Button>
+	<Button android:id="@+id/b_star" android:text="" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/BlackTheme.starButton"></Button>
+</LinearLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	 android:id="@+id/Bottom" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical" android:visibility="gone">
+
+	<LinearLayout android:id="@+id/admob1" android:layout_width="fill_parent" android:layout_height="wrap_content">
+	</LinearLayout>
+
+ <!-- 
+ <com.wooboo.adlib_android.WoobooAdView
+    android:layout_width="fill_parent"
+    android:layout_height="48dip"
+    adsdk:testing="true"
+    adsdk:backgroundColor="#2f1700"
+    adsdk:textColor="#ffe4ca"
+    adsdk:refreshInterval="30"
+    />	
+     --> 
+	<LinearLayout android:id="@+id/pageCtrl"   android:orientation="horizontal"
+		android:layout_width="fill_parent" android:layout_height="48dip" android:background="@drawable/walldownbg">
+		<Button android:id="@+id/b_pre" style="@style/BlackTheme.downButton" android:text=" pre  " android:layout_weight="1" android:layout_height="fill_parent" android:layout_width="wrap_content"></Button>
+		<TextView android:id="@+id/page_num" android:background="@drawable/wallbtdown1" android:layout_height="fill_parent" android:gravity="center" android:layout_width="wrap_content"></TextView>
+		<Button android:id="@+id/b_next" style="@style/BlackTheme.downButton" android:layout_height="fill_parent" android:layout_width="wrap_content" android:layout_weight="1" android:text="next"></Button>
+	</LinearLayout>
+	
+</LinearLayout>
+<!-- 
+
+<LinearLayout android:id="@+id/Bottom1" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_width="fill_parent">
+	<com.admob.android.ads.AdView android:id="@+id/ad3"  android:layout_weight="1"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		admobsdk:testing="false" admobsdk:refreshInterval="15"
+		admobsdk:backgroundColor="#2f1700" admobsdk:textColor="#ffe4ca"
+		admobsdk:keywords="free" />
+</LinearLayout>
+ -->
+<ListView android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@+id/Top" android:id="@+id/indexList" android:layout_above="@+id/Bottom1" android:visibility="visible"/>
+	
+<ScrollView android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/CenterScroll" 
+android:layout_below="@+id/Top" android:layout_above="@+id/Bottom" android:visibility="gone"> 
+	<TableLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/PicTable">
+		<TableRow>
+			<ImageView android:id="@+id/loader1" android:padding="1dip" android:layout_weight="1" android:layout_width="fill_parent" android:layout_height="wrap_content" android:visibility="visible" android:layout_marginRight="1dip" android:src="@drawable/loading"></ImageView>
+			<ImageView android:id="@+id/loader2" android:padding="1dip" android:layout_weight="1" android:layout_width="fill_parent" android:layout_height="wrap_content" android:visibility="visible" android:layout_marginLeft="1dip" android:src="@drawable/loading"></ImageView>
+		</TableRow>
+		<TableRow>
+			<ImageView android:id="@+id/loader3" android:padding="1dip" android:layout_weight="1" android:layout_width="fill_parent" android:layout_height="wrap_content" android:visibility="visible" android:layout_marginRight="1dip" android:src="@drawable/loading"></ImageView>
+			<ImageView android:id="@+id/loader4" android:padding="1dip" android:layout_weight="1" android:layout_width="fill_parent" android:layout_height="wrap_content" android:visibility="visible" android:layout_marginLeft="1dip" android:src="@drawable/loading"></ImageView>
+
+		</TableRow>
+	</TableLayout>	
+</ScrollView> 
+
+</RelativeLayout>

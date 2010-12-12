@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<LinearLayout  android:layout_width="fill_parent" android:id="@+id/Top" android:layout_alignParentTop="true" android:orientation="horizontal" android:layout_height="wrap_content" android:background="@drawable/wallupbg" android:gravity="left">
+	<Button android:layout_width="wrap_content" android:id="@+id/b_back" android:text="  back  " style="@style/BlackTheme.upButton" android:layout_height="fill_parent" android:minWidth="60dip"></Button>
+
+	<Button android:id="@+id/b_setwall" android:layout_height="fill_parent" style="@style/BlackTheme.upButton" android:text="Set" android:layout_width="wrap_content" android:minWidth="60dip"></Button>
+	
+
+	<Button android:layout_width="wrap_content" android:id="@+id/b_save" android:text="  save  " style="@style/BlackTheme.upButton" android:layout_height="fill_parent" android:minWidth="60dip"></Button>
+	<Button android:id="@+id/b_empty1" android:text="" android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="fill_parent" android:background="@null"></Button>
+	<Button android:id="@+id/b_star1" android:text="" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/BlackTheme.starButton"></Button>
+</LinearLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:adsdk="http://schemas.android.com/apk/res/com.k99k.keel.wallpaper"
+	 android:layout_alignParentBottom="true" android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/SetWall">
+ <!-- 
+ <com.wooboo.adlib_android.WoobooAdView
+    android:layout_width="fill_parent"
+    android:layout_height="48dip"
+    adsdk:testing="false"
+    adsdk:backgroundColor="#3D1F33"
+    adsdk:textColor="#cccccc"
+    adsdk:refreshInterval="30" />	
+    
+    <com.admob.android.ads.AdView android:id="@+id/ad2"  adsdk:refreshInterval="30"
+		adsdk:backgroundColor="#3D1F33"
+        adsdk:primaryTextColor="#cccccc"
+        adsdk:secondaryTextColor="#cccccc"
+		adsdk:keywords="game tool movie music" 
+		android:layout_width="fill_parent" android:layout_height="wrap_content" />	
+		 -->
+</LinearLayout>
+<LinearLayout android:layout_below="@+id/Top" android:layout_above="@+id/SetWall" android:layout_width="fill_parent" android:id="@+id/progress" android:gravity="center" android:layout_height="wrap_content">
+<ProgressBar android:id="@+id/progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:layout_gravity="center" />
+</LinearLayout>
+
+<HorizontalScrollView android:layout_below="@+id/Top" android:id="@+id/CenterPic" android:layout_height="wrap_content" android:visibility="gone" android:layout_above="@+id/SetWall" android:layout_centerHorizontal="true" android:layout_width="wrap_content"> 
+	<ImageView android:id="@+id/bigImg" android:layout_height="wrap_content" android:layout_width="wrap_content" android:padding="1dip" android:layout_gravity="fill_horizontal"></ImageView>
+</HorizontalScrollView> 
+
+</RelativeLayout>

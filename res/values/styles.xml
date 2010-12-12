@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme is the default theme. -->
+ 	<style name="BTheme" parent="android:Theme">
+    	<item name="android:windowNoTitle">true</item>
+    	<item name="android:colorForeground">@color/white</item>
+    	<item name="android:colorBackground">@color/black</item>
+    	<item name="android:windowBackground">@color/black</item>
+    	<item name="android:textColor">@color/gray</item>
+    	<item name="android:textSize">16sp</item>
+    </style>
+    <style name="BlackTheme" parent="android:Theme">
+    	<item name="android:windowNoTitle">true</item>
+    	<item name="android:colorForeground">@color/white</item>
+    	<item name="android:colorBackground">@color/purple</item>
+    	<item name="android:windowBackground">@color/purple</item>
+    	<item name="android:textColor">@color/gray</item>
+    	<item name="android:textSize">16sp</item>
+    </style>
+    <style name="BlackTheme.upButton">
+        <item name="android:background">@drawable/btn_up</item>
+    </style> 
+    <style name="BlackTheme.downButton">
+        <item name="android:background">@drawable/btn_down</item>
+    </style> 
+    <style name="BlackTheme.enterButton">
+        <item name="android:background">@drawable/btn_enter</item>
+    </style>
+     <style name="BlackTheme.starButton">
+        <item name="android:background">@drawable/btn_star</item>
+    </style>
+    <style name="BlackTheme.starDialog" parent="android:style/Theme.Dialog">
+   		<item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/wallfangbg</item>
+    </style>
+    
+    
+</resources>
