@@ -183,9 +183,6 @@ public class Loader extends Activity {
         this.setTitle(R.string.title);
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         
-        //初始化ID对象
-        ID.init(this);
-        
         loadTxt = (TextView)this.findViewById(R.id.loadingTxt);
 //        loadView = this.findViewById(R.id.loading);
         loadTxt.setText(getString(R.string.txt_loadin));
@@ -217,6 +214,10 @@ public class Loader extends Activity {
 	private class LoadingThread extends Thread{
 		@Override
 		public void run() {
+
+	        //初始化ID对象
+	        ID.init(Loader.this);
+	        
 			try {
 	        	//先尝试获取本机的files目录下索引
 				String iniStr = IO.readTxt(Loader.this,INI_FILE_NAME);
@@ -249,7 +250,7 @@ public class Loader extends Activity {
 					String serverOne = jarr.getString(i);
 					Log.d(TAG, "TRY TO GET INI FROM:"+serverOne);
 					//String remoteIni = getRemoteTxt(serverOne+INI_FILE_NAME);
-					String remoteIni = NetWork.postUrlByEncrypt(serverOne+INI_FILE_NAME,ID.getFullJson().toString());
+					String remoteIni = NetWork.postUrl(serverOne+INI_FILE_NAME,ID.getFullJsonEnc());
 					//成功读取
 					if (!remoteIni.equals("")) {
 						
@@ -342,131 +343,6 @@ public class Loader extends Activity {
 			 
 		}
 	}
-	
-/*	
-	 private static final int IO_BUFFER_SIZE = 1024*4;
-	    private static final void copy(InputStream in, OutputStream out) throws IOException {
-	        byte[] b = new byte[IO_BUFFER_SIZE];
-	        int read;
-	        while ((read = in.read(b)) != -1) {
-	            out.write(b, 0, read);
-	        }
-	    }
-	private final String getRemoteFileByString(String url){
-		String re = "";
-		try {
-			URL aURL = new URL(url);
-			InetAddress addr = InetAddress.getByName(aURL.getHost());
-			int port = 80;
-			SocketAddress sockaddr = new InetSocketAddress(addr, port);
-
-			// Create an unbound socket
-			Socket sock = new Socket();
-
-			// This method will block no more than timeoutMs.
-			// If the timeout occurs, SocketTimeoutException is thrown.
-			int timeoutMs = 2000; // 2 seconds
-			sock.connect(sockaddr, timeoutMs);
-			
-			OutputStream output = sock.getOutputStream();
-			StringBuilder sb = new StringBuilder();
-			sb.append("GET " + url + " HTTP/1.1\r\n");
-			sb.append("Host:" + addr.getHostAddress() + "\r\n");
-			sb.append("Connection:Close\r\n");
-			sb.append("\r\n");
-
-			output.write(sb.toString().getBytes("utf8"));
-			output.flush();
-
-			//BufferedReader rd = new BufferedReader(new InputStreamReader(sock.getInputStream(),"utf8"));
-			URLConnection conn = aURL.openConnection();
-			conn.connect();
-			BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-			final BufferedInputStream in = new BufferedInputStream(conn.getInputStream(),
-					IO_BUFFER_SIZE);
-			
-			final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
-			final BufferedOutputStream  out = new BufferedOutputStream(dataStream, IO_BUFFER_SIZE);
-			copy(in, out);
-			out.flush();
-			//final byte[] data = dataStream.toByteArray();
-			re = dataStream.toString("utf-8");//new String(data);
-	        String str;
-	        boolean contentStart = false;
-	        while ((str = rd.readLine()) != null) {
-	        	if (str.trim().length() == 0) {
-	        		contentStart = true;
-				}
-	        	if (contentStart) {
-	        		re+=str;
-				}
-	            
-	        }
-	        rd.close();
-	        //sock.close();
-		} catch (UnknownHostException e) {
-			Log.e(TAG, "getRemoteTxt Error!"+url, e);
-		} catch (SocketTimeoutException e) {
-			Log.e(TAG, "getRemoteTxt Error!"+url, e);
-		} catch (IOException e) {
-			Log.e(TAG, "getRemoteTxt Error!"+url, e);
-		}
-		
-		return re;
-	}
-
-    private final String getRemoteTxt(String url){
-		String str = "";
-		try {
-			URL aURL = new URL(url);
-			URLConnection conn = aURL.openConnection();
-//			conn.setRequestProperty("appVersion", appver+"");
-//			conn.setRequestProperty("imei", imei);
-//			conn.setRequestProperty("imsi", imsi);
-//			conn.setRequestProperty("lang", lang);
-//			conn.setRequestProperty("width", screenWidth+"");
-//			conn.setRequestProperty("height", screenHeight+"");
-//			conn.setRequestProperty("dpi", screenDpi+"");
-//			
-//			conn.setRequestProperty("DISPLAY", android.os.Build.DISPLAY);
-//			conn.setRequestProperty("BOARD", android.os.Build.BOARD);
-//			conn.setRequestProperty("BRAND", android.os.Build.BRAND);
-//			conn.setRequestProperty("FINGERPRINT", android.os.Build.FINGERPRINT);
-//			conn.setRequestProperty("DEVICE", android.os.Build.DEVICE);
-//			conn.setRequestProperty("HOST", android.os.Build.HOST);
-//			conn.setRequestProperty("ID", android.os.Build.ID);
-//			conn.setRequestProperty("MODEL", android.os.Build.MODEL);
-//			conn.setRequestProperty("PRODUCT", android.os.Build.PRODUCT);
-//			conn.setRequestProperty("TAGS", android.os.Build.TAGS);
-//			conn.setRequestProperty("TYPE", android.os.Build.TYPE);
-//			conn.setRequestProperty("USER", android.os.Build.USER);
-			conn.setConnectTimeout(3000);
-			conn.connect();
-			StringBuilder b = new StringBuilder();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-		
-			String line;
-			while ((line = reader.readLine()) != null) {
-				b.append(line);
-				// b.append("\r\n"); // 添加换行
-			}
-			reader.close();
-			str = b.toString();
-			Log.d(TAG, "getRemoteTxt OK:" + url);
-		} catch (IOException e) {
-			Log.e(TAG, "getRemoteTxt Error!"+url, e);
-			return "";
-		} catch (Exception e) {
-			Log.e(TAG, "getRemoteTxt unknown Error!"+url, e);
-			return "";
-		}
-		
-		
-		return str;
-	}
-    
-
-	*/
 	
  
     @Override

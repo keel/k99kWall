@@ -209,6 +209,10 @@ public final class ID {
 		return fullIdJson;
 	}
 	
+	/**
+	 * 直接从缓存中取密文,如果用于高安全项目应该加入时间变量每次新生成密文
+	 * @return String
+	 */
 	public static final String getIDJsonEnc(){
 		return idJsonEnc;
 	}
@@ -226,98 +230,11 @@ public final class ID {
 	}
 	
 	
-	
-	//-------------------配置读取与写入
-	
-	private static SharedPreferences settings;
-	private static Editor editor;
-	
-	final static String PREFS_NAME = "k99kWall_ini";  
-	
-	public static final SharedPreferences getSharedPreferences(Context context){
-		return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-	}
-	
-	public static final String getPropString(Context context,String key,String defValue){
-		if (settings == null) {
-			settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-		}
-		try {
-			return settings.getString(key, defValue);
-		} catch (Exception e) {
-			return defValue;
-		}
-	}
-	
-	public static final int getPropInt(Context context,String key,int defValue){
-		if (settings == null) {
-			settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-		}
-		try {
-			return settings.getInt(key, defValue);
-		} catch (Exception e) {
-			return defValue;
-		}
-	}
 
-	public static final boolean getPropBoolean(Context context,String key,boolean defValue){
-		if (settings == null) {
-			settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-		}
-		try {
-			return settings.getBoolean(key, defValue);
-		} catch (Exception e) {
-			return defValue;
-		}
-	}
-	
-	public static final void setPropString(Context context,String key,String value){
-		if (settings == null || editor == null) {
-			settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-			editor = settings.edit();
-		}
-		editor.putString(key,value);   
-		editor.commit();
-	}
-	
-	public static final void setPropInt(Context context,String key,int value){
-		if (settings == null || editor == null) {
-			settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-			editor = settings.edit();
-		}
-		editor.putInt(key,value);   
-		editor.commit();
-	}
-	
-	public static final void setPropBoolean(Context context,String key,boolean value){
-		if (settings == null || editor == null) {
-			settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-			editor = settings.edit();
-		}
-		editor.putBoolean(key,value);   
-		editor.commit();
-	}
-	
-	public static final void setProps(Context context,String[] key,Object[] value){
-		if (settings == null || editor == null) {
-			settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-			editor = settings.edit();
-		}
-		for (int i = 0; i < key.length; i++) {
-			if (value[i] instanceof String) {
-				editor.putString(key[i], (String) value[i]);
-			}else if(value[i] instanceof Integer){
-				editor.putInt(key[i], Integer.valueOf(value[i].toString()));
-			}else if(value[i] instanceof Boolean){
-				editor.putBoolean(key[i], Boolean.valueOf(value[i].toString()));
-			}
-		}  
-		editor.commit();
-	}
-	
 	//-------------------加密
 	/**
 	 * 加密用的key
+	 * TODO 未实现密钥网络更新机制
 	 */
 	static final String encryptKey = "htHunter01_!(!)";
 	

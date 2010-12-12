@@ -17,8 +17,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import android.content.Context;
 import android.content.Intent;
@@ -37,9 +37,76 @@ public final class NetWork {
 	public NetWork() {
 	}
 	
-	
 	private static final String TAG = "NetWork";
 	
+	//---------------服务器组管理
+	private static String[] servers;
+	
+	/**
+	 * 设置服务器组
+	 * @param servs
+	 */
+	public static final void setServers(String[] servs){
+		servers = servs;
+	}
+	
+	private static int serverFailCount = 0;
+	private static int serverNum = 0;
+	
+	/**
+	 * 当前服务器
+	 * @return
+	 */
+	public static final String getServer(){
+		return servers[serverNum];
+	}
+	
+	/**
+	 * 服务器连接失败,同一服务器次数达到3次则发生切换
+	 * @param autoChange 是否自动切换
+	 */
+	public static final void serverFail(boolean autoChange){
+		serverFailCount++;
+		if (autoChange && serverFailCount>3) {
+			changeServer();
+		}
+	}
+	
+	/**
+	 * 切换服务器
+	 */
+	public static final void changeServer(){
+		if (servers != null && servers.length>1) {
+			if ((serverNum + 1) < servers.length) {
+				serverNum++;
+			}else if((serverNum - 1) >= 0){
+				serverNum--;
+			}
+		}
+	}
+	
+	/**
+	 * 切换到下一个服务器
+	 * @return 是否切换过,false表示无下一个服务器或servers长度为1
+	 */
+	public static final boolean nextServer(){
+		if (servers != null && servers.length>1) {
+			if ((serverNum + 1) < servers.length) {
+				serverNum++;
+				return true;
+			}
+			return false;
+		}else{
+			return false;
+		}
+	}
+	
+	/**
+	 * 服务器状态正常
+	 */
+	public static final void serverOK(){
+		serverFailCount = 0;
+	}
 	
 	
 	//多服务器组自动切换
@@ -67,7 +134,7 @@ public final class NetWork {
 		}
 	}
 
-	public static final Bitmap getRemotePicWithWallProp(String url,Map<String,String> headers) {
+	public static final Bitmap getRemotePicWithWallProp(String url,HashMap<String,String> headers) {
 		Bitmap bm = null;
 		try {
 			URL aURL = new URL(url);
@@ -194,6 +261,16 @@ public final class NetWork {
 	}
 	
 	/**
+	 * 使用wall参数发起一个post，timeout为3000，无换行
+	 * @param url
+	 * @param postValue post参数值,无加密
+	 * @return
+	 */
+	public final static String postUrl(String url,String postValue){
+		return NetWork.postUrl(url, "wall", postValue, 3000, false);
+	}
+	
+	/**
 	 * post数据到一个url,并获取反回的String,所有数据均使用utf-8编码
 	 * @param url Url地址
 	 * @param paras Map形式的参数集
@@ -201,7 +278,7 @@ public final class NetWork {
 	 * @param breakLine 是否加入换行符
 	 * @return 返回的结果页内容
 	 */
-	public final static String postUrl(String url,Map<String,String> paras,int timeOut,boolean breakLine){
+	public final static String postUrl(String url,HashMap<String,String> paras,int timeOut,boolean breakLine){
 		 // Construct data
 		StringBuilder sb;
 		String data = "";
@@ -298,4 +375,68 @@ public final class NetWork {
 		Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 		context.startActivity(intent);
 	}
+	
+	/*
+	private final String getRemoteFileByString(String url){
+		String re = "";
+		try {
+			URL aURL = new URL(url);
+			InetAddress addr = InetAddress.getByName(aURL.getHost());
+			int port = 80;
+			SocketAddress sockaddr = new InetSocketAddress(addr, port);
+
+			// Create an unbound socket
+			Socket sock = new Socket();
+
+			// This method will block no more than timeoutMs.
+			// If the timeout occurs, SocketTimeoutException is thrown.
+			int timeoutMs = 2000; // 2 seconds
+			sock.connect(sockaddr, timeoutMs);
+			
+			OutputStream output = sock.getOutputStream();
+			StringBuilder sb = new StringBuilder();
+			sb.append("GET " + url + " HTTP/1.1\r\n");
+			sb.append("Host:" + addr.getHostAddress() + "\r\n");
+			sb.append("Connection:Close\r\n");
+			sb.append("\r\n");
+
+			output.write(sb.toString().getBytes("utf8"));
+			output.flush();
+
+			//BufferedReader rd = new BufferedReader(new InputStreamReader(sock.getInputStream(),"utf8"));
+			URLConnection conn = aURL.openConnection();
+			conn.connect();
+			BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			final BufferedInputStream in = new BufferedInputStream(conn.getInputStream(),
+					IO_BUFFER_SIZE);
+			
+			final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
+			final BufferedOutputStream  out = new BufferedOutputStream(dataStream, IO_BUFFER_SIZE);
+			copy(in, out);
+			out.flush();
+			//final byte[] data = dataStream.toByteArray();
+			re = dataStream.toString("utf-8");//new String(data);
+	        String str;
+	        boolean contentStart = false;
+	        while ((str = rd.readLine()) != null) {
+	        	if (str.trim().length() == 0) {
+	        		contentStart = true;
+				}
+	        	if (contentStart) {
+	        		re+=str;
+				}
+	            
+	        }
+	        rd.close();
+	        //sock.close();
+		} catch (UnknownHostException e) {
+			Log.e(TAG, "getRemoteTxt Error!"+url, e);
+		} catch (SocketTimeoutException e) {
+			Log.e(TAG, "getRemoteTxt Error!"+url, e);
+		} catch (IOException e) {
+			Log.e(TAG, "getRemoteTxt Error!"+url, e);
+		}
+		
+		return re;
+	}*/
 }

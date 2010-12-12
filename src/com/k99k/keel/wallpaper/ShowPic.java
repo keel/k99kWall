@@ -6,7 +6,6 @@ package com.k99k.keel.wallpaper;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -324,7 +323,7 @@ public class ShowPic extends Activity {
 
     private final String getRemoteTxt(String url,String type){
     	String str = "";
-    	Map<String,String> paras = new HashMap<String,String>();
+    	HashMap<String,String> paras = new HashMap<String,String>();
     	paras.put("wall", ID.getSmallJsonEnc());
     	paras.put("type", type);
     	paras.put("pic_oid", pic_oid);
@@ -619,7 +618,7 @@ public class ShowPic extends Activity {
 		@Override
 		public void run() {
 			try {
-				Map<String,String> m = new HashMap<String,String>();
+				HashMap<String,String> m = new HashMap<String,String>();
 				final Bitmap b = NetWork.getRemotePicWithWallProp(picUrl,m);
 				pic_oid = m.get("pic_oid");
 				picHandler.post(new Runnable() {
