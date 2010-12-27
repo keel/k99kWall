@@ -20,7 +20,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -345,7 +344,7 @@ public class K99KWall extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         this.setTitle(R.string.title);
-     	jsonStr = this.getIntent().getStringExtra("json");
+     	jsonStr = this.getIntent().getStringExtra("jsonRoot");
  		if (jsonStr == null || jsonStr.length() < 1) {
  			//参数错误,提示
  			Log.e(TAG, "no para data.");
@@ -362,6 +361,7 @@ public class K99KWall extends Activity {
  			Log.e(TAG, "json parse error.",e);
  			showDialog(MSG_JSON_ERR);
  		}
+ 		
         b_new = (Button)this.findViewById(R.id.b_new);
         b_cate = (Button)this.findViewById(R.id.b_cate);
         b_next = (Button)this.findViewById(R.id.b_next);
@@ -1223,7 +1223,7 @@ public class K99KWall extends Activity {
 				Bitmap b = NetWork.getRemotePicWithWallProp(this.paths[i],null);//K99KWall.loadedBmp[i];
 				if (b!=null && b.getWidth()>0) {
 				
-					K99KWall.loadedBmp[i] = (screenH<500) ? b : resizePic(b,337);
+					K99KWall.loadedBmp[i] = (screenH<500) ? b : IO.resizePic(b,337);
 					//Log.d(TAG, "screenH:"+screenH+"small:"+i+" w:"+K99KWall.loadedBmp[i].getWidth()+" h:"+K99KWall.loadedBmp[i].getHeight());
 					mHandler.sendEmptyMessage(MSG_LOAD_SMALL+i);
 				}else{
@@ -1248,86 +1248,25 @@ public class K99KWall extends Activity {
 		}
 	}
 	
-	private Bitmap resizePic(Bitmap b,int maxHeight){
-		int orgWidth = b.getWidth();
-		int orgHeight = b.getHeight();
-//		Log.d(TAG, "maxHeight:"+maxHeight+" orgHeight:"+orgHeight);
-		float scale = ((float)maxHeight)/((float)orgHeight);
-//		float toWidth = (orgWidth*scale);
-//		float toHeight = (orgHeight*scale);
-//		Log.d(TAG, "scale:"+scale);
-//		Log.d(TAG, "toWidth:"+toWidth);
-//		Log.d(TAG, "toHeight:"+toHeight);
-		
-		Matrix matrix = new Matrix();
-		matrix.postScale(scale, scale);
-		Bitmap newBmp = Bitmap.createBitmap(b,0,0,orgWidth,orgHeight,matrix,true);
-//		Log.d(TAG, "newHeight:"+newBmp.getHeight());
-//		Log.d(TAG, "newWidth:"+newBmp.getWidth());
-		return newBmp;
-	}
+//	private static final Bitmap resizePic(Bitmap b,int maxHeight){
+//		int orgWidth = b.getWidth();
+//		int orgHeight = b.getHeight();
+////		Log.d(TAG, "maxHeight:"+maxHeight+" orgHeight:"+orgHeight);
+//		float scale = ((float)maxHeight)/((float)orgHeight);
+////		float toWidth = (orgWidth*scale);
+////		float toHeight = (orgHeight*scale);
+////		Log.d(TAG, "scale:"+scale);
+////		Log.d(TAG, "toWidth:"+toWidth);
+////		Log.d(TAG, "toHeight:"+toHeight);
+//		
+//		Matrix matrix = new Matrix();
+//		matrix.postScale(scale, scale);
+//		Bitmap newBmp = Bitmap.createBitmap(b,0,0,orgWidth,orgHeight,matrix,true);
+////		Log.d(TAG, "newHeight:"+newBmp.getHeight());
+////		Log.d(TAG, "newWidth:"+newBmp.getWidth());
+//		return newBmp;
+//	}
 	
-/*	
-    private static final int IO_BUFFER_SIZE = 1024*4;
-    private static final void copy(InputStream in, OutputStream out) throws IOException {
-        byte[] b = new byte[IO_BUFFER_SIZE];
-        int read;
-        while ((read = in.read(b)) != -1) {
-            out.write(b, 0, read);
-        }
-    }
-    */
-    
-	/*
-	 * 获取远程图片，与copy方法和IO_BUFFER_SIZE相配合
-	 * @param url
-	 * @return Bitmap
-	 *//*
-	private final Bitmap getRemotePic(String url) {
-//		DisplayMetrics dm = new DisplayMetrics();
-//		getWindowManager().getDefaultDisplay().getMetrics(dm);
-//		int screenH = dm.heightPixels;
-		if (screenH<500) {
-			url = url.replace(".jpg", "_l.jpg");
-		}
-		
-		Log.d(TAG, "screenH:"+screenH+" remote picUrl:" + url+" orderby:"+orderby+" orderAsc:"+orderAsc);
-		Bitmap bm = null;
-		try {
-			URL u = new URL(url);
-			URLConnection conn = u.openConnection();
-			conn.setRequestProperty("appVersion", appver+"");
-			conn.setRequestProperty("imei", imei);
-			conn.setRequestProperty("lang", lang);
-			String sortby = (orderby.equals("random") || orderby.equals("shuffle"))?"time":orderby;
-			conn.setRequestProperty("sortBy", sortby);
-			conn.setRequestProperty("sortType", orderAsc+"");
-			conn.connect();
-//			final BufferedInputStream in = new BufferedInputStream(new URL(url).openStream(),
-//					IO_BUFFER_SIZE);
-			final BufferedInputStream in = new BufferedInputStream(conn.getInputStream(),
-					IO_BUFFER_SIZE);
-			final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
-			final BufferedOutputStream  out = new BufferedOutputStream(dataStream, IO_BUFFER_SIZE);
-			copy(in, out);
-			out.flush();
-
-			final byte[] data = dataStream.toByteArray();
-			bm = BitmapFactory.decodeByteArray(data, 0, data.length);
-		} catch (MalformedURLException e) {
-			Log.e(TAG, "getRemotePic Error!"+url,e);
-		} catch (Exception e) {
-			Log.e(TAG, "getRemotePic Error!"+url,e);
-		}
-		if (bm ==null ) {
-			Log.e(TAG, "getRemotePic Error!"+url);
-		}else{
-			Log.d(TAG, "getRemotePic OK:" + url);
-		}
-		return bm;
-		
-		
-	}*/
  
     @Override
 	public void onConfigurationChanged(Configuration newConfig) {

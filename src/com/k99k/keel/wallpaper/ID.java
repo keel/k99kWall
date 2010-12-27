@@ -4,10 +4,12 @@
 package com.k99k.keel.wallpaper;
 
 
+import java.util.Date;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.k99k.tools.desEncrypt.DesEncrypt;
+import com.k99k.tools.encrypter.Encrypter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -37,8 +39,8 @@ public final class ID {
 	//缓存json加密后的String
 //	private static String idJsonEnc;
 //	private static String osJsonEnc;
-	private static String smallIdJsonEnc;
-	private static String fullIdJsonEnc;
+//	private static String smallIdJsonEnc;
+//	private static String fullIdJsonEnc;
 	/**
 	 * imei
 	 */
@@ -198,12 +200,20 @@ public final class ID {
 			fullIdJson.put("TYPE", TYPE);
 			fullIdJson.put("USER", USER);
 			
+			smallIdJson.put("userName", "");
+			fullIdJson.put("userName", "");
+			
 			//缓存加密后的String
 //			idJsonEnc = encrypt(idJson.toString());
 //			osJsonEnc = encrypt(osJson.toString());
-			fullIdJsonEnc = encrypt(fullIdJson.toString());
-			smallIdJsonEnc = encrypt(smallIdJson.toString());
-			
+			//Log.e(TAG, fullIdJson.toString());
+			//fullIdJsonEnc = encrypt(fullIdJson.toString());
+			//Log.e(TAG, fullIdJsonEnc);
+			//smallIdJsonEnc = encrypt(smallIdJson.toString());
+//			try {
+//				Log.e(TAG, encrypter.decrypt(fullIdJsonEnc));
+//			} catch (Exception e) {
+//			}
 		} catch (JSONException e) {
 			Log.e(TAG, "initIDJson error",e);
 		}
@@ -216,6 +226,14 @@ public final class ID {
 //	public static final JSONObject getOSJson(){
 //		return osJson;
 //	}
+	
+	public void setUserToJson(String userNanme){
+		try {
+			smallIdJson.put("userName", userNanme);
+			fullIdJson.put("userName", userNanme);
+		} catch (JSONException e) {
+		}
+	}
 	
 	public static final JSONObject getSmallJson(){
 		return smallIdJson;
@@ -235,47 +253,56 @@ public final class ID {
 //	}
 	
 	/**
-	 * 直接从缓存中取密文,如果用于高安全项目应该加入时间变量每次新生成密文
+	 * 直接从缓存中取密文,加入时间变量每次新生成密文
 	 * @return String
 	 */
 	public static final String getSmallJsonEnc(){
-		return smallIdJsonEnc;
+		try {
+			smallIdJson.put("time", System.currentTimeMillis());
+		} catch (JSONException e) {
+		}
+		return encrypt(smallIdJson.toString());
 	}
 	
 	public static final String getFullJsonEnc(){
-		return fullIdJsonEnc;
+		try {
+			fullIdJson.put("time", System.currentTimeMillis());
+		} catch (JSONException e) {
+		}
+		return encrypt(fullIdJson.toString());
+		//return fullIdJsonEnc;
 	}
 	
 	
 
 	//-------------------加密
-	/**
-	 * 加密用的key
-	 * TODO 未实现密钥网络更新机制
-	 */
-	static final String encryptKey = "htHunter01_!(!)";
+//	/**
+//	 * 加密用的key
+//	 * TODO 未实现密钥网络更新机制
+//	 */
+//	static final String encryptKey = "htk";
 	
 	/**
 	 * 加密器
 	 */
-	private static final DesEncrypt desEncrypt = createDesEncrypt(encryptKey);
+	private static final Encrypter encrypter = createDesEncrypt();
 	
-	private final static DesEncrypt createDesEncrypt(String enKey){
+	private final static Encrypter createDesEncrypt(){
 		try {
-			return new DesEncrypt(encryptKey);
+			return new Encrypter();
 		} catch (Exception e) {
 			Log.e(TAG, "createDesEncrypt Error!",e);
 		}
 		return null;
 	}
 	
-	public static final DesEncrypt getDesEncrypt(){
-		return desEncrypt;
+	public static final Encrypter getDesEncrypt(){
+		return encrypter;
 	}
 	
 	public static final String encrypt(String content){
 		try {
-			return desEncrypt.encrypt(content);
+			return encrypter.encrypt(content);
 		} catch (Exception e) {
 			Log.e(TAG, "encrypt Error!",e);
 			return "";

@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.graphics.Bitmap.CompressFormat;
 import android.util.Log;
 
@@ -121,9 +122,9 @@ public final class IO {
 	}
 	
 	/**
-	 * 保存图片到SD卡
+	 * 保存图片到SD卡,如果SD卡不存在,直接保存到内存
 	 * @param fileName 文件名
-	 * @param savePath 文件路径(需要保证它存在)
+	 * @param savePath 文件路径,带/sdcard的路径
 	 * @param pic 图片
 	 * @return 是否成功保存
 	 */
@@ -133,18 +134,25 @@ public final class IO {
 		}
 		try {
 
-				//如果SD卡未挂载
-//				if (android.os.Environment.getExternalStorageState() != android.os.Environment.MEDIA_MOUNTED) {
-//					showDialog(DIALOG_ERR_NOSDCARD);
-//					return;
-//				}
-				//FileOutputStream out = this.openFileOutput(fileName, MODE_WORLD_READABLE);//这是保存到/data/package下面，不能定义位置
+			//如果SD卡未挂载
+			boolean sdcardIn = true;
+			if (android.os.Environment.getExternalStorageState() != android.os.Environment.MEDIA_MOUNTED) {
+				sdcardIn = false;
+			}
+			File sd = new File("/sdcard");
+			if (!sd.canWrite()) {
+				sdcardIn = false;
+			}
+			if (!sdcardIn) {
+				savePath = savePath.substring(savePath.indexOf("sdcard")+6);
+			}
+			//FileOutputStream out = this.openFileOutput(fileName, MODE_WORLD_READABLE);//这是保存到/data/package下面，不能定义位置
 			File f = new File(savePath);
 			if (!f.exists()) {
 				f.mkdir();
 			}
 			FileOutputStream out = new FileOutputStream(fileName);
-			pic.compress(CompressFormat.JPEG, 100, out);
+			pic.compress(CompressFormat.JPEG, 95, out);
 			out.flush();
 			out.close();
 			return true;
@@ -153,6 +161,25 @@ public final class IO {
 			return false;
 		}
 
+	}
+	
+	public static final Bitmap resizePic(Bitmap b,int maxHeight){
+		int orgWidth = b.getWidth();
+		int orgHeight = b.getHeight();
+//		Log.d(TAG, "maxHeight:"+maxHeight+" orgHeight:"+orgHeight);
+		float scale = ((float)maxHeight)/((float)orgHeight);
+//		float toWidth = (orgWidth*scale);
+//		float toHeight = (orgHeight*scale);
+//		Log.d(TAG, "scale:"+scale);
+//		Log.d(TAG, "toWidth:"+toWidth);
+//		Log.d(TAG, "toHeight:"+toHeight);
+		
+		Matrix matrix = new Matrix();
+		matrix.postScale(scale, scale);
+		Bitmap newBmp = Bitmap.createBitmap(b,0,0,orgWidth,orgHeight,matrix,true);
+//		Log.d(TAG, "newHeight:"+newBmp.getHeight());
+//		Log.d(TAG, "newWidth:"+newBmp.getWidth());
+		return newBmp;
 	}
 	
 	//-------------------配置读取与写入

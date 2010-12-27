@@ -64,6 +64,7 @@ public final class NetWork {
 	public static final void serverFail(boolean autoChange){
 		serverFailCount++;
 		if (autoChange && serverFailCount>3) {
+			serverFailCount = 0;
 			changeServer();
 		}
 	}
@@ -75,10 +76,13 @@ public final class NetWork {
 		if (servers != null && servers.length>1) {
 			if ((serverNum + 1) < servers.length) {
 				serverNum++;
+				serverFailCount = 0;
 			}else if((serverNum - 1) >= 0){
 				serverNum--;
+				serverFailCount = 0;
 			}
 		}
+		
 	}
 	
 	/**
@@ -89,6 +93,7 @@ public final class NetWork {
 		if (servers != null && servers.length>1) {
 			if ((serverNum + 1) < servers.length) {
 				serverNum++;
+				serverFailCount = 0;
 				return true;
 			}
 			return false;
@@ -162,14 +167,17 @@ public final class NetWork {
 		} catch (MalformedURLException e) {
 			Log.e(TAG, "getRemotePic Error!" + url, e);
 		} catch (IOException e) {
+			serverFail(true);
 			Log.e(TAG, "getRemotePic Error!" + url, e);
 		} catch (Exception e) {
+			serverFail(true);
 			Log.e(TAG, "getRemotePic Error!" + url, e);
 		}
 		if (bm == null) {
 			Log.e(TAG, "getRemotePic Error!" + url);
 		} else {
 			Log.d(TAG, "getRemotePic OK:" + url);
+			serverOK();
 		}
 		return bm;
 

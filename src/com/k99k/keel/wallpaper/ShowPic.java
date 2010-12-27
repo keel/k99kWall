@@ -587,8 +587,10 @@ public class ShowPic extends Activity {
 				picHandler.post(new Runnable() {
 					public void run() {
 						Log.d(TAG, "showResult:"+showResult);
-						CharSequence timeStr = DateFormat.format("hh-mm-ssaa_MM-dd-yyyy", new Date());
-						savePic(saveSdPath,cate+timeStr+".jpg",showResult);
+//						CharSequence timeStr = DateFormat.format("hh-mm-ssaa_MM-dd-yyyy", new Date());
+//						savePic(saveSdPath,cate+timeStr+".jpg",showResult);
+						
+						savePic(saveSdPath,picId+".jpg",showResult);
 					}
 				});
 				
