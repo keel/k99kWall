@@ -136,22 +136,27 @@ public final class IO {
 
 			//如果SD卡未挂载
 			boolean sdcardIn = true;
-			if (android.os.Environment.getExternalStorageState() != android.os.Environment.MEDIA_MOUNTED) {
-				sdcardIn = false;
-			}
+//			if (android.os.Environment.getExternalStorageState() != android.os.Environment.MEDIA_MOUNTED) {
+//				sdcardIn = false;
+//			}
+//			Log.e(TAG, "sdcardIn:"+sdcardIn);
 			File sd = new File("/sdcard");
 			if (!sd.canWrite()) {
 				sdcardIn = false;
 			}
 			if (!sdcardIn) {
-				savePath = savePath.substring(savePath.indexOf("sdcard")+6);
+				//FIXME 无SD卡则直接提示无法保存
+				//savePath = savePath.substring(savePath.indexOf("sdcard")+6);
+				return false;
 			}
 			//FileOutputStream out = this.openFileOutput(fileName, MODE_WORLD_READABLE);//这是保存到/data/package下面，不能定义位置
-			File f = new File(savePath);
-			if (!f.exists()) {
-				f.mkdir();
-			}
-			FileOutputStream out = new FileOutputStream(fileName);
+			//File f = new File(savePath);
+			//if (!f.exists()) {
+			(new File(savePath)).mkdirs();
+			//}
+			//File file = new File(savePath+fileName);
+			//Log.e(TAG, "canWrite:"+sdcardIn+" savePath:"+savePath +" fileName:"+fileName+" file.canWrite:"+file.canWrite());
+			FileOutputStream out = new FileOutputStream(savePath+fileName);
 			pic.compress(CompressFormat.JPEG, 95, out);
 			out.flush();
 			out.close();

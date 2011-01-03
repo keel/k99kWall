@@ -90,7 +90,8 @@ public class StarActivity extends Activity {
 							if (ison) {
 								//显示选中状态
 								if (!orderby.equals("random")) {
-									asc = (orderAsc == 0)?" ↑":" ↓";
+									//Log.e(TAG, "asc:"+orderAsc);
+									asc = (orderAsc == 0)?" ↓":" ↑";
 								}
 							}
 							c =" ("+K99KWall.cateArr[K99KWall.jsonCate-1]+") ";
@@ -133,9 +134,14 @@ public class StarActivity extends Activity {
 		text.setText(btTxt);
 		bt_star.setOnClickListener(new Button.OnClickListener(){
 			public void onClick(View v) {
+				if (K99KWall.orderby.equals(orderby)) {
+					K99KWall.orderbyChanged = false;
+				}else{
+					K99KWall.orderbyChanged = true;
+				}
 				K99KWall.orderby = orderby;
 				K99KWall.orderAsc = orderAsc;
-				Log.i(TAG, "orderby:"+orderby+" orderAsc:"+orderAsc);
+				Log.d(TAG, "orderby:"+orderby+" orderAsc:"+orderAsc);
 				Intent i = new Intent();
 //				i.putExtra("orderby", orderby);
 //				i.putExtra("orderAsc", orderAsc);

@@ -44,6 +44,8 @@ public final class NetWork {
 	 */
 	public static final void setServers(String[] servs){
 		servers = servs;
+		serverNum = 0;
+		serverFailCount = 0;
 	}
 	
 	private static int serverFailCount = 0;
@@ -54,6 +56,7 @@ public final class NetWork {
 	 * @return
 	 */
 	public static final String getServer(){
+		//Log.e(TAG, "getServer:"+servers[serverNum]+" serverNum:"+serverNum);
 		return servers[serverNum];
 	}
 	
@@ -73,6 +76,7 @@ public final class NetWork {
 	 * 切换服务器
 	 */
 	public static final void changeServer(){
+		//Log.e(TAG, "Will changeServer! serverNum:"+serverNum +" s:"+servers[serverNum]);
 		if (servers != null && servers.length>1) {
 			if ((serverNum + 1) < servers.length) {
 				serverNum++;
@@ -81,6 +85,7 @@ public final class NetWork {
 				serverNum--;
 				serverFailCount = 0;
 			}
+			Log.e(TAG, "Server changed! serverNum:"+serverNum +" s:"+servers[serverNum]);
 		}
 		
 	}
@@ -134,19 +139,84 @@ public final class NetWork {
 			out.write(b, 0, read);
 		}
 	}
+	
+	public static final Bitmap getRemotePicByOid(String url,String pic_oid) {
+		Bitmap bm = null;
+		try {
+			//配置服务器
+			url = getServer()+url;
+			URL aURL = new URL(url);
+			URLConnection conn = aURL.openConnection();
+			conn.setConnectTimeout(3000);
+				
+			//get方式
+			conn.setRequestProperty("pic_oid", pic_oid);
+			conn.connect();
+			
+			final BufferedInputStream in = new BufferedInputStream(conn
+					.getInputStream(), IO_BUFFER_SIZE);
+
+			final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
+			final BufferedOutputStream out = new BufferedOutputStream(
+					dataStream, IO_BUFFER_SIZE);
+			copy(in, out);
+			out.flush();
+
+			final byte[] data = dataStream.toByteArray();
+			bm = BitmapFactory.decodeByteArray(data, 0, data.length);
+		} catch (MalformedURLException e) {
+			Log.e(TAG, "getRemotePic Error!" + url, e);
+		} catch (IOException e) {
+			serverFail(true);
+			Log.e(TAG, "getRemotePic Error!" + url, e);
+		} catch (Exception e) {
+			serverFail(true);
+			Log.e(TAG, "getRemotePic Error!" + url, e);
+		}
+		if (bm == null) {
+			Log.e(TAG, "getRemotePic Error!" + url);
+		} else {
+			Log.d(TAG, "getRemotePic OK:" + url);
+			serverOK();
+		}
+		return bm;
+
+	}
 
 	public static final Bitmap getRemotePicWithWallProp(String url,String[] headers) {
 		Bitmap bm = null;
 		try {
-			URL aURL = new URL(url);
-			URLConnection conn = aURL.openConnection();
+			//配置服务器
+			url = getServer()+url;
 			//加入默认的参数
-			conn.setRequestProperty("wall", ID.getSmallJsonEnc());
+		    
 			String sortby = (K99KWall.orderby.equals("random") || K99KWall.orderby
 					.equals("shuffle")) ? "time" : K99KWall.orderby;
+			
+//			StringBuilder sb = new StringBuilder();
+//			sb.append("wall=").append(ID.getSmallJsonEnc());
+//			sb.append("&sortBy=").append(sortby);
+//			sb.append("&sortType=").append(K99KWall.orderAsc+ "");
+			
+			URL aURL = new URL(url);
+			URLConnection conn = aURL.openConnection();
+			conn.setConnectTimeout(3000);
+				
+			//get方式
+			//conn.setRequestProperty("wall", ID.getSmallJsonEnc());
 			conn.setRequestProperty("sortBy", sortby);
 			conn.setRequestProperty("sortType", K99KWall.orderAsc + "");
 			conn.connect();
+			
+			
+			//post方式
+//		    conn.setDoInput(true);
+//		    conn.setDoOutput(true);
+//		    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+//		    wr.write(sb.toString());
+//		    wr.flush();
+			
+		    
 			// 获取图片id,判断是否已加星(根据同步后的本地加星列表)
 			String oid = conn.getHeaderField("pic_oid");
 			if (headers != null && oid != null && oid.length() > 0) {
@@ -189,6 +259,8 @@ public final class NetWork {
 	 * @return
 	 */
 	public final static String getUrlContent(String url){
+		//配置服务器
+		url = getServer()+url;
 		return NetWork.getUrlContent(url, 3000, false);
 	}
 	
@@ -202,6 +274,8 @@ public final class NetWork {
 	public final static String getUrlContent(String url,int timeOut,boolean breakLine){
 		String str = "";
 		try {
+			//配置服务器
+			url = getServer()+url;
 			URL aURL = new URL(url);
 			URLConnection conn = aURL.openConnection();
 //			conn.setRequestProperty("appVersion", appver+"");
@@ -268,7 +342,7 @@ public final class NetWork {
 	/**
 	 * 使用wall参数发起一个post，timeout为3000，无换行
 	 * @param url
-	 * @param postValue post参数值,无加密
+	 * @param postValue post参数值,无加密操作
 	 * @return
 	 */
 	public final static String postUrl(String url,String postValue){
@@ -322,7 +396,7 @@ public final class NetWork {
 //			sb.append(URLEncoder.encode(key, "UTF-8")).append("=");
 //			sb.append(URLEncoder.encode(value, "UTF-8"));
 			sb.append(key).append("=");
-			sb.append(value).append("&");
+			sb.append(value);//.append("&");
 			data = sb.toString();
 //		} catch (UnsupportedEncodingException e) {
 //			Log.e(TAG,"postUrl error!" ,e);
@@ -344,8 +418,8 @@ public final class NetWork {
 		StringBuilder sb = new StringBuilder();
 		String data = "";
 		for (int i = 0; i < key.length; i++) {
-			sb.append(key).append("=");
-			sb.append(value).append("&");
+			sb.append(key[i]).append("=");
+			sb.append(value[i]).append("&");
 		}
 		sb.deleteCharAt(sb.length()-1);
 		data = sb.toString();
@@ -362,6 +436,10 @@ public final class NetWork {
 	 */
 	private final static String postUrl(String url,String data,int timeOut,boolean breakLine){
 		try {
+			//配置服务器
+			if (!url.startsWith("http://")) {
+				url = getServer()+url;
+			}
 		    // Send data
 		    URL aUrl = new URL(url);
 		    URLConnection conn = aUrl.openConnection();
@@ -370,6 +448,7 @@ public final class NetWork {
 		    conn.setDoOutput(true);
 		    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
 		    wr.write(data);
+		    //Log.e(TAG, "postUrl data:"+data);
 		    wr.flush();
 
 		    // Get the response
@@ -390,6 +469,7 @@ public final class NetWork {
 		    rd.close();
 		    return sb.toString();
 		} catch (Exception e) {
+			changeServer();
 			Log.e(TAG,"postUrl error!" ,e);
 			return "";
 		}
@@ -398,7 +478,7 @@ public final class NetWork {
 	
 	/**
 	 * 实现用系统自带浏览器打开网页
-	 * @param url
+	 * @param url 注意不在servers组中
 	 */
 	public final static void openUrl(Context context,String url) {
 		Uri uri = Uri.parse(url);

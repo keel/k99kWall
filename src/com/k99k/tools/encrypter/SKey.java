@@ -4,10 +4,21 @@ import javax.crypto.SecretKey;
 
 public class SKey implements SecretKey {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	
+	
+
+	/**
+	 * @param algorithm
+	 * @param format
+	 * @param enc
+	 */
+	public SKey(String algorithm, String format, byte[] enc) {
+		super();
+		this.algorithm = algorithm;
+		this.enc = enc;
+		this.format = format;
+	}
 
 	private String algorithm;
 	

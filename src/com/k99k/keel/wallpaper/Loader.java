@@ -92,7 +92,7 @@ public class Loader extends Activity {
 	/**
 	 * 远程图片路径的前缀
 	 */
-	private static String remotePrePath = "http://202.102.113.204/";
+	//private static String remotePrePath = "http://202.102.113.204/";
 	private static String remoteIndex = "http://202.102.113.204/orion/fw_index.htm";
 	private static String stateTxt = "ok";
 	
@@ -244,21 +244,29 @@ public class Loader extends Activity {
 				
 				//轮循获取可用的远程服务器
 				JSONArray jarr = iniJson.getJSONArray("server");
+				int len = jarr.length();
+				String[] servs = new String[len];
+				for (int i = 0; i < len; i++) {
+					servs[i] = jarr.getString(i);
+				}
+				NetWork.setServers(servs);
 				boolean loadRemoteIniOK = false;
-				for (int i = 0; i < jarr.length(); i++) {
-					String serverOne = jarr.getString(i);
-					Log.d(TAG, "TRY TO GET INI FROM:"+serverOne);
-					String remoteIni = NetWork.postUrl(serverOne+INI_FILE_NAME,ID.getFullJsonEnc());
+				for (int i = 0; i < len; i++) {
+					//String serverOne = jarr.getString(i);
+					Log.d(TAG, "TRY TO GET INI FROM:"+NetWork.getServer()+INI_FILE_NAME);
+					String remoteIni = NetWork.postUrl(INI_FILE_NAME,ID.getFullJsonEnc());
+					//Log.e(TAG, "remoteIni:"+remoteIni);
+					
 					//成功读取
 					if (!remoteIni.equals("")) {
 						
-						remotePrePath = serverOne;
-						Log.d(TAG, "download remote ini OK:"+remotePrePath+INI_FILE_NAME);
+						//remotePrePath = serverOne;
+						Log.d(TAG, "download remote ini OK:"+NetWork.getServer()+INI_FILE_NAME);
 						JSONObject remoteIniJson = new JSONObject(remoteIni);
 						//判断服务器状态 ,非ok的服务器跳过
 						stateTxt = remoteIniJson.getString("state");
 						if (!stateTxt.equals("ok")) {
-							Log.w(TAG, "download remote ini failed:"+remotePrePath+INI_FILE_NAME);
+							Log.w(TAG, "download remote ini failed:"+NetWork.getServer()+INI_FILE_NAME);
 							continue;
 						}
 						//判断程序版本
@@ -280,12 +288,20 @@ public class Loader extends Activity {
 						}
 						//总是使用远端的配置,更新配置
 						iniJson = remoteIniJson;
-						remotePrePath = iniJson.getString("server");
+						jarr = iniJson.getJSONArray("server");
+						int lens = jarr.length();
+						String[] servs2 = new String[lens];
+						for (int j = 0; j < lens; j++) {
+							servs2[j] = jarr.getString(j);
+						}
+						NetWork.setServers(servs2);
 						remoteIndex = iniJson.getString("index");
 						// ini处理完成
 						loadRemoteIniOK = true;
 						break;
 					}else{
+						//下一服务器--自动切换
+						//NetWork.nextServer();
 						//mHandler.sendEmptyMessage(LOAD_ERR_REMOTE);
 						continue;
 					}
@@ -294,10 +310,10 @@ public class Loader extends Activity {
 					mHandler.sendEmptyMessage(LOAD_ERR_REMOTE);
 					return;
 				}
-				Log.d(TAG, "ini version:"+iniJson.getString("version") +"\n remotePrePath:"+remotePrePath+"\n remoteIndexPath:"+remoteIndex);
+				Log.d(TAG, "ini version:"+iniJson.getString("version") +"\n remoteIndexPath:"+remoteIndex);
 				//----------------------------------				
 				//尝试获取远程index
-				indexJsonStr = NetWork.getUrlContent(remoteIndex);
+				indexJsonStr = NetWork.postUrl(remoteIndex,ID.getSmallJsonEnc());
 				if (indexJsonStr.equals("")) {
 					//无法获取远程index
 					mHandler.sendEmptyMessage(LOAD_ERR_REMOTE);
@@ -309,6 +325,7 @@ public class Loader extends Activity {
 //		         	isRemote = true;
 		        Log.d(TAG, "Get the remote index OK!");
 				jsonRoot = new JSONObject(indexJsonStr);
+				//Log.e(TAG, "jsonRoot:"+indexJsonStr);
 				Log.d(TAG, "index version:"+jsonRoot.getString("version"));
 			} catch (JSONException e) {
 				Log.e(TAG, "JSON file parse error.",e);

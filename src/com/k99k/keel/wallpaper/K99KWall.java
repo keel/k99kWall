@@ -169,10 +169,10 @@ public class K99KWall extends Activity {
 	static final int RESULT_OK = 10; 
 	
 	private ProgressDialog dialog ;
-	/**
-	 * 远程图片路径的前缀
-	 */
-	private static String remotePrePath = "http://202.102.113.204/orion/";
+//	/**
+//	 * 远程图片路径的前缀
+//	 */
+//	private static String remotePrePath = "http://202.102.113.204/orion/";
 	
 	/**
 	 * 同步星星的URL
@@ -252,7 +252,7 @@ public class K99KWall extends Activity {
 				loadAdMob();
 				break;
 			case MSG_SYN:
-				new SynMyStars(remotePrePath+synStarPath).start();
+				new SynMyStars(synStarPath).start();
 				break;
 			case MSG_SYNOK:
 				//转到我的星星第一页
@@ -279,11 +279,13 @@ public class K99KWall extends Activity {
 				JSONObject o = arr.getJSONObject(i);
 				if (o.getString("type").equals("order") && o.getString("sort").equals(orderby)) {
 					o.put("ison", true);
-					if (orderAsc == 0) {
-						o.put("asc", 1);
-					}else{
-						o.put("asc", 0);
-					}
+					o.put("asc", orderAsc);
+					Log.e(TAG, "orderAsc:"+orderAsc);
+//					if (orderAsc == 0) {
+//						o.put("asc", 1);
+//					}else{
+//						o.put("asc", 0);
+//					}
 					
 				}
 				
@@ -352,8 +354,17 @@ public class K99KWall extends Activity {
  		}
  		try {
  			json = new JSONObject(jsonStr);
- 			//这里使用index.json中的server
- 			remotePrePath = json.getString("server");
+ 			//Log.e(TAG, "JSONSTR:"+jsonStr);
+ 			//这里使用index.json中的server组
+ 			JSONArray jarr =  json.getJSONArray("servers");
+ 			int len = jarr.length();
+ 			String[] servers = new String[len];
+ 			for (int i = 0; i < len; i++) {
+ 				servers[i] = jarr.getString(i);
+			}
+ 			NetWork.setServers(servers);
+ 			
+ 			//remotePrePath = servers[0];//json.getString("server");
  			//星星菜单
  			btjson = json.getJSONObject("starmenu");
  			//synStarPath = remotePrePath+"getstars.htm";
@@ -559,6 +570,7 @@ public class K99KWall extends Activity {
 					//更新btjson
 					updateBtJson("show2",orderby,orderAsc);
 				}
+				
 			}else if(type.equals("mystars")){
 				if (hasSynStar) {
 					Log.d(TAG, "hasSynStar:"+hasSynStar);
@@ -570,7 +582,7 @@ public class K99KWall extends Activity {
 						dialog = ProgressDialog.show(this, getString(R.string.proc_diag_title), getString(R.string.proc_diag_text));
 						showProc = true;
 						if (!hasSynStar) {
-							new SynMyStars(remotePrePath+synStarPath).start();
+							new SynMyStars(synStarPath).start();
 						}
 					}
 				}
@@ -587,9 +599,12 @@ public class K99KWall extends Activity {
 		
 	}
 	
+	static boolean orderbyChanged = true;
+	
 	private final void updateBtJson(String showType,String sort,int asc){
 		//更新btjson
 		try {
+			//Log.d(TAG, "updateBtJson showType:"+showType+" sort:"+sort+" asc:"+asc+" orderby:"+orderby);
 			JSONArray arr = btjson.getJSONArray(showType);
 			for (int i = 0; i <arr.length(); i++) {
 				JSONObject o = arr.getJSONObject(i);
@@ -597,18 +612,24 @@ public class K99KWall extends Activity {
 				if (o.getString("type").equals("order") ) {
 					if (o.getString("sort").equals(sort)) {
 						o.put("ison", true);
-						//反置asc
-						if (asc == 0) {
-							asc = 1;
-						}else{
-							asc = 0;
+						Log.e(TAG, "");
+						if (!orderbyChanged) {
+							//反置ascz
+							if (asc == 0) {
+								asc = 1;
+							}else{
+								asc = 0;
+							}
 						}
+						orderAsc = asc;
 						o.put("asc", asc);
 					}else{
 						o.put("ison", false);
 					}
 				}
 			}
+			//Log.d(TAG, "updateBtJson done! showType:"+showType+" sort:"+sort+" asc:"+asc+" orderby:"+orderby);
+			
 		} catch (JSONException e) {
 			Log.e(TAG, "btjson:check ison position error:"+showType+" sort:"+sort, e);
 		}
@@ -969,9 +990,11 @@ public class K99KWall extends Activity {
 						imgPaths[i] = "end";
 					}else{
 //						Log.d(TAG, "-------myStarList:"+myStarList.get(currentPicId-i));
-						String[] strarr = myStarList.get(currentPicId-i).split("#");
-						imgPaths[i] = strarr[0]+strarr[1]+".jpg";
-						pres[i] = strarr[0];
+						//String[] strarr = myStarList.get(currentPicId-i).split("#");
+						//imgPaths[i] = strarr[0]+strarr[1]+".jpg";
+						//pres[i] = strarr[0];
+						imgPaths[i] = "_"+myStarList.get(currentPicId-i)+".jpg";
+						pres[i] = "oid";
 					}
 					//String s = myStarList.get(currentPicId-i);//cate/cate_id
 					//picPre+(currentPicId-i)+".jpg";
@@ -1053,7 +1076,7 @@ public class K99KWall extends Activity {
 	 */
 	private final void loadImgs(String picPre,String[] paths){
 		String[] remotePaths = new String[4];
-		String pre = remotePrePath+picPre+"/";
+		String pre = picPre+"/";
 		for (int i = 0; i < paths.length; i++) {
 			//结束图片直接显示
 			if (paths[i].equals("end")) {
@@ -1094,8 +1117,8 @@ public class K99KWall extends Activity {
 				remotePaths[i] = "end";
 				continue;
 			}else{
-				remotePaths[i] = remotePrePath+pres[i]+"/" + paths[i];
-				this.setImgLink(loader[i], remotePrePath+pres[i]+"/","b_" + paths[i]);
+				remotePaths[i] = pres[i]+"/" + paths[i];
+				this.setImgLink(loader[i], pres[i]+"/","b_" + paths[i]);
 			}
 			
 		}
@@ -1153,13 +1176,13 @@ public class K99KWall extends Activity {
 					b.append(line);
 				}
 				reader.close();*/
-				String str = NetWork.postUrlByEncrypt(url, ID.getSmallJsonEnc());
+				String str = NetWork.postUrl(url, ID.getSmallJsonEnc());
 				if (str.length() == 0) {
 					Log.d(TAG, "load syn get empty." + url);
 					str = "[]";
 				}
 				Log.d(TAG, "load syn string OK:" + url);
-				Log.d(TAG, "str:" + str);
+				//Log.d(TAG, "str:" + str);
 				JSONArray arr = new JSONArray(str);
 				myStarList.clear();
 				for (int i = 0; i < arr.length(); i++) {

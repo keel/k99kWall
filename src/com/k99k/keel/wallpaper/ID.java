@@ -67,18 +67,18 @@ public final class ID {
 	 */
 	private static int appVer = 8;
 	
-	public static final String DISPLAY = (android.os.Build.DISPLAY == null)?"":android.os.Build.DISPLAY;
-	public static final String BOARD = (android.os.Build.BOARD== null)?"":android.os.Build.BOARD;
-	public static final String BRAND = (android.os.Build.BRAND== null)?"":android.os.Build.BRAND;
-	public static final String FINGERPRINT = (android.os.Build.FINGERPRINT== null)?"":android.os.Build.FINGERPRINT;
-	public static final String DEVICE = (android.os.Build.DEVICE== null)?"":android.os.Build.DEVICE;
-	public static final String HOST = (android.os.Build.HOST== null)?"":android.os.Build.HOST;
-	public static final String ID = (android.os.Build.ID== null)?"":android.os.Build.ID;
-	public static final String MODEL = (android.os.Build.MODEL== null)?"":android.os.Build.MODEL;
-	public static final String PRODUCT = (android.os.Build.PRODUCT== null)?"":android.os.Build.PRODUCT;
-	public static final String TAGS = (android.os.Build.TAGS== null)?"":android.os.Build.TAGS;
-	public static final String TYPE = (android.os.Build.TYPE== null)?"":android.os.Build.TYPE;
-	public static final String USER = (android.os.Build.USER== null)?"":android.os.Build.USER;
+	public static String DISPLAY;
+	public static String BOARD ;
+	public static String BRAND ;
+	public static String FINGERPRINT ;
+	public static String DEVICE ;
+	public static String HOST ;
+	public static String ID ;
+	public static String MODEL;
+	public static String PRODUCT ;
+	public static String TAGS;
+	public static String TYPE;
+	public static String USER;
 	
 	public static final int getScreenWidth(){
 		return screenWidth;
@@ -125,7 +125,7 @@ public final class ID {
 		//String coutry = activity.getResources().getConfiguration().locale.getCountry();
 		TelephonyManager tm = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
 		imei = (tm.getDeviceId() == null) ? "" : tm.getDeviceId();
-		tel = (tm.getLine1Number() == null) ? "" : tm.getDeviceId();
+		tel = (tm.getLine1Number() == null) ? "" : tm.getLine1Number();
 		// String snumber = tm.getSimSerialNumber();
 		imsi = (tm.getSubscriberId() == null) ? "" : tm.getSubscriberId();
 
@@ -139,6 +139,18 @@ public final class ID {
 		} catch (NameNotFoundException e) {
 			Log.e(TAG, "appver error",e);
 		}
+		DISPLAY = (android.os.Build.DISPLAY == null)?"":android.os.Build.DISPLAY;
+		BOARD = (android.os.Build.BOARD== null)?"":android.os.Build.BOARD;
+		BRAND = (android.os.Build.BRAND== null)?"":android.os.Build.BRAND;
+		FINGERPRINT = (android.os.Build.FINGERPRINT== null)?"":android.os.Build.FINGERPRINT;
+		DEVICE = (android.os.Build.DEVICE== null)?"":android.os.Build.DEVICE;
+		HOST = (android.os.Build.HOST== null)?"":android.os.Build.HOST;
+		ID = (android.os.Build.ID== null)?"":android.os.Build.ID;
+		MODEL = (android.os.Build.MODEL== null)?"":android.os.Build.MODEL;
+		PRODUCT = (android.os.Build.PRODUCT== null)?"":android.os.Build.PRODUCT;
+		TAGS = (android.os.Build.TAGS== null)?"":android.os.Build.TAGS;
+		TYPE = (android.os.Build.TYPE== null)?"":android.os.Build.TYPE;
+		USER = (android.os.Build.USER== null)?"":android.os.Build.USER;
 		//最后形成属性json
 		initIDJson();
 	}
@@ -187,19 +199,19 @@ public final class ID {
 			fullIdJson.put("height", screenHeight);
 			fullIdJson.put("dpi", screenDpi);
 			fullIdJson.put("appVersion", appVer);
-			fullIdJson.put("DISPLAY", DISPLAY);
-			fullIdJson.put("BOARD", BOARD);
-			fullIdJson.put("BRAND", BRAND);
-			fullIdJson.put("FINGERPRINT", FINGERPRINT);
-			fullIdJson.put("DEVICE", DEVICE);
-			fullIdJson.put("HOST", HOST);
-			fullIdJson.put("ID", ID);
-			fullIdJson.put("MODEL", MODEL);
-			fullIdJson.put("PRODUCT", PRODUCT);
-			fullIdJson.put("TAGS", TAGS);
-			fullIdJson.put("TYPE", TYPE);
-			fullIdJson.put("USER", USER);
-			
+			fullIdJson.put("display", DISPLAY);
+			fullIdJson.put("board", BOARD);
+			fullIdJson.put("brand", BRAND);
+			fullIdJson.put("fingerprint", FINGERPRINT);
+			fullIdJson.put("device", DEVICE);
+			fullIdJson.put("host", HOST);
+			fullIdJson.put("id", ID);
+			fullIdJson.put("model", MODEL);
+			fullIdJson.put("product", PRODUCT);
+			fullIdJson.put("tags", TAGS);
+			fullIdJson.put("type", TYPE);
+			fullIdJson.put("user", USER);
+			//Log.e(TAG, "display:"+DISPLAY);
 			smallIdJson.put("userName", "");
 			fullIdJson.put("userName", "");
 			
@@ -259,15 +271,20 @@ public final class ID {
 	public static final String getSmallJsonEnc(){
 		try {
 			smallIdJson.put("time", System.currentTimeMillis());
-		} catch (JSONException e) {
+			} catch (JSONException e) {
 		}
 		return encrypt(smallIdJson.toString());
 	}
 	
 	public static final String getFullJsonEnc(){
+		
 		try {
 			fullIdJson.put("time", System.currentTimeMillis());
+			//String s = encrypt(fullIdJson.toString());
+			//Log.e(TAG, " getFullJsonEnc:"+decrypt(s));
+			//return s;
 		} catch (JSONException e) {
+			//return "";
 		}
 		return encrypt(fullIdJson.toString());
 		//return fullIdJsonEnc;
@@ -308,5 +325,12 @@ public final class ID {
 			return "";
 		}
 	}
-	
+	public static final String decrypt(String content){
+		try {
+			return encrypter.decrypt(content);
+		} catch (Exception e) {
+			Log.e(TAG, "decrypt Error!",e);
+			return "";
+		}
+	}
 }

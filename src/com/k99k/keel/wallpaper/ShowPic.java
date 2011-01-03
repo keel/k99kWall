@@ -4,7 +4,6 @@
 package com.k99k.keel.wallpaper;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,7 +23,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -79,7 +77,7 @@ public class ShowPic extends Activity {
 	private Button b_star;
 	//private int picId;
 	private static final String TAG = "ShowPic";
-	private String remoteDomain;// = this.getString(R.string.remoteDomain);
+//	private String remoteDomain;// = this.getString(R.string.remoteDomain);
 	private String picUrl;
 	private Handler picHandler;
 	//private ProgressBar bar;
@@ -178,7 +176,7 @@ public class ShowPic extends Activity {
 		b_setWall.setText(getString(R.string.bt_set));
 		
 		picFileName = this.getIntent().getStringExtra("bigImg");
-		remoteDomain = this.getIntent().getStringExtra("server");
+		//remoteDomain = this.getIntent().getStringExtra("server");
 		saveSdPath = this.getIntent().getStringExtra("saveSdPath");
 		
 		//去掉状态栏
@@ -195,7 +193,7 @@ public class ShowPic extends Activity {
 			progress.setVisibility(View.GONE);
 			centerPic.setVisibility(View.VISIBLE);
 		}else{*/
-			picUrl = remoteDomain + picFileName;
+			picUrl = picFileName;
 			Log.d(TAG, "Remote picFileName:"+picFileName);
 			new LoadThread().start();
 		//}
@@ -226,7 +224,7 @@ public class ShowPic extends Activity {
 				intent.putExtra("star", s);
 				//不显示排序
 				intent.putExtra("isShowOrder", false);
-				if (K99KWall.myStarList.contains(getCateAndPicId())) {
+				if (K99KWall.myStarList.contains(pic_oid)) {
 					intent.putExtra("isAdd", "n");
 				}
 				intent.setClass(ShowPic.this, StarActivity.class);
@@ -266,9 +264,9 @@ public class ShowPic extends Activity {
 			String cate = sarr[0];
 			String picId = sarr[1];
 			Log.d(TAG, "-----cate:"+cate+" picId:"+picId+" type:"+type);
-			String u = this.remoteDomain+starUrl;
+			String u = starUrl;
 			dialog = ProgressDialog.show(this, getString(R.string.proc_diag_title), getString(R.string.proc_diag_text));
-			new StarOpt(u, type, cate, picId).start();
+			new StarOpt(u, type).start();
 			
 			
 			break;
@@ -283,14 +281,10 @@ public class ShowPic extends Activity {
 	private class StarOpt extends Thread {
 		private String type;
 		private String url;
-		private String cate;
-		private String picId;
 		
-		public StarOpt(String url,String type,String cate,String picId){
+		public StarOpt(String url,String type){
 			this.type = type;
 			this.url = url;
-			this.cate = cate;
-			this.picId = picId;
 		}
 		
 		@Override
@@ -302,6 +296,7 @@ public class ShowPic extends Activity {
 			if (!re.equals("fail")) {
 				if (this.type.equals("add")) {
 					mHandler.sendEmptyMessage(ADD_STAR_OK);
+					Log.e(TAG, "add star:"+re);
 					K99KWall.myStarList.add(re);
 				}else{
 					mHandler.sendEmptyMessage(DEL_STAR_OK);
@@ -329,6 +324,7 @@ public class ShowPic extends Activity {
 //    	paras.put("type", type);
 //    	paras.put("pic_oid", pic_oid);
     	str = NetWork.postUrl(url, keys,values, 3000, false);
+    	
     	/*
     	
 		try {
@@ -581,20 +577,20 @@ public class ShowPic extends Activity {
 		@Override
 		public void run() {
 			try {
-				String[] sarr = ShowPic.this.getCateAndPicId().split("#");
-				final String cate = sarr[0];
-				final String picId = sarr[1];
+				//String[] sarr = ShowPic.this.getCateAndPicId().split("#");
+				//final String cate = sarr[0];
+				//final String picId = sarr[1];
 				picHandler.post(new Runnable() {
 					public void run() {
 						Log.d(TAG, "showResult:"+showResult);
 //						CharSequence timeStr = DateFormat.format("hh-mm-ssaa_MM-dd-yyyy", new Date());
-//						savePic(saveSdPath,cate+timeStr+".jpg",showResult);
+//						savePic(cate+timeStr+".jpg",saveSdPath,showResult);
 						
-						savePic(saveSdPath,picId+".jpg",showResult);
+						savePic(pic_oid+".jpg",saveSdPath,showResult);
 					}
 				});
 				
-				String url = ShowPic.this.remoteDomain+downUrl;
+				String url = downUrl;
 				String re = ShowPic.this.getRemoteTxt(url, "");
 				Log.d(TAG, "DOWN:"+re);
 			} catch (Exception e) {
@@ -624,6 +620,7 @@ public class ShowPic extends Activity {
 				String[] pic_oid_arr = new String[1];
 				final Bitmap b = NetWork.getRemotePicWithWallProp(picUrl,pic_oid_arr);
 				pic_oid = pic_oid_arr[0];
+				//Log.e(TAG, "PIC_OID:"+pic_oid);
 				picHandler.post(new Runnable() {
 					public void run() {
 						if (b == null) {

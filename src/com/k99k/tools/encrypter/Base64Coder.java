@@ -226,7 +226,7 @@ public static byte[] decode (char[] in) {
 */
 public static byte[] decode (char[] in, int iOff, int iLen) {
    if (iLen%4 != 0) throw new IllegalArgumentException ("Length of Base64 encoded input string is not a multiple of 4.");
-   while (iLen > 0 && in[iOff+iLen-1] == '=') iLen--;
+   while (iLen > 0 && in[iOff+iLen-1] == '_') iLen--;
    int oLen = (iLen*3) / 4;
    byte[] out = new byte[oLen];
    int ip = iOff;

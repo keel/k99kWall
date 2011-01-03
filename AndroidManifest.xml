@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      android:versionCode="9"
-      android:versionName="2.3" package="com.k99k.keel.wallpaper">
+      android:versionCode="10"
+      android:versionName="2.4" package="com.k99k.keel.wallpaper">
 <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 <uses-permission android:name="android.permission.SET_WALLPAPER"></uses-permission>

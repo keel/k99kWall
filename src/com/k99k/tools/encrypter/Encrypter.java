@@ -21,14 +21,12 @@ public class Encrypter {
 
 	Cipher dcipher;
 	
-//	String key;
 	/**
 	 * 用于加解密的key
 	 */
 	private static final byte[] key = new byte[]{79, 13, 33, -66, -58, 103, 3, -34, -45, 53, 9, 45, 28, -124, 50, -2};
 
 	public Encrypter() throws Exception {
-//		this.key = strKey;
 		ecipher = Cipher.getInstance("AES");
 		dcipher = Cipher.getInstance("AES");
 //		KeyGenerator _generator = KeyGenerator.getInstance("AES");
@@ -37,10 +35,7 @@ public class Encrypter {
 //		//_generator.init(new SecureRandom(strKey.getBytes()));
 //		_generator.init(128,sr);
 //		SecretKey key = _generator.generateKey();
-		SKey key2 = new SKey();
-		key2.setFormat("RAW");
-		key2.setAlgorithm("AES");
-		key2.setEnc(key);
+		SKey key2 = new SKey("AES","RAW",key);
 		ecipher.init(Cipher.ENCRYPT_MODE, key2);
 		dcipher.init(Cipher.DECRYPT_MODE, key2);
 	}
