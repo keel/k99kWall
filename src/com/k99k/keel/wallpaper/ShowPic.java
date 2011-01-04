@@ -141,7 +141,7 @@ public class ShowPic extends Activity {
     private void loadAdMob(){
         //=======================ADMOB====================
     	if (ID.getLANG().equals("CN")) {
-    		WoobooAdView ad = new WoobooAdView(this,Color.argb(255, 61, 31, 51),
+    		WoobooAdView ad = new WoobooAdView(this,"5a198962dbd644ddb60062b143270482",Color.argb(255, 61, 31, 51),
     				Color.argb(255, 204, 204, 204), false, 28);
     		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,
     				LayoutParams.WRAP_CONTENT);
