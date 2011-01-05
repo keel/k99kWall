@@ -7,9 +7,10 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.youmi.android.AdListener;
+
 import com.admob.android.ads.AdView;
 import com.k99k.keel.wallpaper.R;
-import com.wooboo.adlib_android.WoobooAdView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -42,7 +43,7 @@ import android.widget.RelativeLayout.LayoutParams;
  * @author keel
  *
  */
-public class ShowPic extends Activity {
+public class ShowPic extends Activity implements AdListener {
 	
 	private static final int DIALOG_ERR_WEBPIC_404 = 2;
 	private static final int DIALOG_ERR_NOSDCARD = 3;
@@ -138,16 +139,26 @@ public class ShowPic extends Activity {
 		}
 	};
 	
+	net.youmi.android.AdView youmiAdView;
+	
     private void loadAdMob(){
-        //=======================ADMOB====================
-    	if (ID.getLANG().equals("CN")) {
-    		WoobooAdView ad = new WoobooAdView(this,"5a198962dbd644ddb60062b143270482",Color.argb(255, 61, 31, 51),
-    				Color.argb(255, 204, 204, 204), false, 28);
-    		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,
+        if (ID.getLANG().equals("CN")) {
+    		
+      	 	//======================= youmi ====================
+        	youmiAdView = new net.youmi.android.AdView(this,Color.argb(255, 61, 31, 51),Color.argb(255, 204, 204, 204),160);
+        	LayoutParams lparams = new LayoutParams(LayoutParams.FILL_PARENT,
     				LayoutParams.WRAP_CONTENT);
-    		ad.setLayoutParams(params);
-            ((LinearLayout)this.findViewById(R.id.SetWall)).addView(ad);
+        	((LinearLayout)this.findViewById(R.id.admob1)).addView(youmiAdView,lparams);
+        	youmiAdView.setAdListener(this);
+        	
+//    		WoobooAdView ad = new WoobooAdView(this,"5a198962dbd644ddb60062b143270482",Color.argb(255, 61, 31, 51),
+//    				Color.argb(255, 204, 204, 204), false, 28);
+//    		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,
+//    				LayoutParams.WRAP_CONTENT);
+//    		ad.setLayoutParams(params);
+//            ((LinearLayout)this.findViewById(R.id.SetWall)).addView(ad);
 		}else{
+			//=======================ADMOB====================
 			com.admob.android.ads.AdView admob2 = new AdView(ShowPic.this);
 	        admob2.setBackgroundColor(Color.argb(255, 61, 31, 51));
 	        admob2.setPrimaryTextColor(Color.argb(255, 204, 204, 204));
@@ -396,7 +407,6 @@ public class ShowPic extends Activity {
 	
 	@Override
 	public void setWallpaper(Bitmap bitmap) throws IOException {
-		
 		super.setWallpaper(bitmap);
 	}
 	
@@ -539,7 +549,7 @@ public class ShowPic extends Activity {
 //					return;
 //				}
 				//FileOutputStream out = this.openFileOutput(fileName, MODE_WORLD_READABLE);//这是保存到/data/package下面，不能定义位置
-		boolean re = IO.savePic(fileName, path, this.picToSave);
+		boolean re = IO.savePic(this,fileName, path, this.picToSave);
 		if (showResult) {
 			if (re) {
 				showDialog(DIALOG_OK_SAVE);
@@ -613,6 +623,7 @@ public class ShowPic extends Activity {
 		return false;
     	//return super.dispatchKeyEvent(event);
     }
+    
 	private class LoadThread extends Thread {
 		@Override
 		public void run() {
@@ -748,6 +759,14 @@ public class ShowPic extends Activity {
 		    //竖向  
 			//bigImgView.setImageBitmap(resizePic(picToSave));
 		}  
+	}
+
+	public void onConnectFailed() {
+		
+	}
+
+	public void onReceiveAd() {
+		
 	}
 	
 }

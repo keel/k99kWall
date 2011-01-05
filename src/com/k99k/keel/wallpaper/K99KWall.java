@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+
+import net.youmi.android.AdListener;
+import net.youmi.android.AdManager;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,16 +39,19 @@ import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.RelativeLayout.LayoutParams;
 import com.k99k.keel.wallpaper.R;
-import com.wooboo.adlib_android.WoobooAdView;
 /**
  * 主界面Activity
  * @author keel
  *
  */
-public class K99KWall extends Activity {
+public class K99KWall extends Activity implements AdListener {
 	
 	private static final String TAG  ="K99KWall";
-
+	net.youmi.android.AdView youmiAdView;
+	static {
+		AdManager.init("6bcc694597cf55ce", "4507d8bd601d6728", 30, false,
+				"2.4");
+	}
 	
 	private Button b_new;
 	private Button b_cate;
@@ -655,15 +662,23 @@ public class K99KWall extends Activity {
     }
    
     private void loadAdMob(){
-        //=======================ADMOB====================
-    	if (ID.getLANG().equals("CN")) {
-    		WoobooAdView ad = new WoobooAdView(this,"5a198962dbd644ddb60062b143270482",Color.argb(255, 61, 31, 51),
-    				Color.argb(255, 204, 204, 204), false, 28);
-    		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,
+    	
+    	
+        if (ID.getLANG().equals("CN")) {
+       	 	//======================= youmi ====================
+        	youmiAdView = new net.youmi.android.AdView(this,Color.argb(255, 61, 31, 51),Color.argb(255, 204, 204, 204),160);
+        	LayoutParams lparams = new LayoutParams(LayoutParams.FILL_PARENT,
     				LayoutParams.WRAP_CONTENT);
-    		ad.setLayoutParams(params);
-            ((LinearLayout)this.findViewById(R.id.admob1)).addView(ad);
+        	((LinearLayout)this.findViewById(R.id.admob1)).addView(youmiAdView,lparams);
+        	youmiAdView.setAdListener(this);
+//    		WoobooAdView ad = new WoobooAdView(this,"5a198962dbd644ddb60062b143270482",Color.argb(255, 61, 31, 51),
+//    				Color.argb(255, 204, 204, 204), false, 28);
+//    		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,
+//    				LayoutParams.WRAP_CONTENT);
+//    		ad.setLayoutParams(params);
+//            ((LinearLayout)this.findViewById(R.id.admob1)).addView(ad);
 		}else{
+			//=======================ADMOB====================
 			com.admob.android.ads.AdView admob2 = new AdView(K99KWall.this);
 	        admob2.setBackgroundColor(Color.argb(255, 61, 31, 51));
 	        admob2.setPrimaryTextColor(Color.argb(255, 204, 204, 204));
@@ -1307,6 +1322,12 @@ public class K99KWall extends Activity {
 			//fitSize();
 		}  
 	}
+public void onConnectFailed() {
+	
+}
+public void onReceiveAd() {
+	
+}
 	
 	
 }

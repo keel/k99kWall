@@ -18,6 +18,8 @@ import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.Bitmap.CompressFormat;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.util.Log;
 
 /**
@@ -121,6 +123,7 @@ public final class IO {
 		}
 	}
 	
+	
 	/**
 	 * 保存图片到SD卡,如果SD卡不存在,直接保存到内存
 	 * @param fileName 文件名
@@ -128,7 +131,7 @@ public final class IO {
 	 * @param pic 图片
 	 * @return 是否成功保存
 	 */
-	public static final boolean savePic(String fileName,String savePath,Bitmap pic){
+	public static final boolean savePic(Context context,String fileName,String savePath,Bitmap pic){
 		if (pic == null) {
 			return false;
 		}
@@ -160,12 +163,60 @@ public final class IO {
 			pic.compress(CompressFormat.JPEG, 95, out);
 			out.flush();
 			out.close();
+			//扫描到媒体库
+			//if (mediaScanConn == null) {
+			mediaScanConn = new MediaScannerConnection(context,new MediaSannerClient(savePath+fileName,"image/jpeg"));  
+			//}
+			mediaScanConn.connect();
 			return true;
 		} catch (IOException e) {
 			Log.e(TAG, "savePic error:" + fileName,e);
 			return false;
 		}
 
+	}
+	
+	/**
+	 * 用于扫描wallpaper目录下图片的扫描器
+	 */
+	static MediaScannerConnection mediaScanConn = null;//new MediaScannerConnection(this,new MusicSannerClient());  
+	
+	/**
+	 * 媒体扫描器
+	 * @author keel
+	 *
+	 */
+	static class MediaSannerClient implements MediaScannerConnection.MediaScannerConnectionClient {
+
+		public MediaSannerClient(String filePath,String fileType){
+  			this.filePath = filePath;
+  			this.fileType = fileType;
+  		}
+  
+  		public MediaSannerClient(String[] filePaths,String fileType){
+  			this.filePaths = filePaths;
+  			this.fileType = fileType;
+  		}
+  		String filePath = null;
+  		String fileType = null;
+  		String[] filePaths = null;
+  		
+		public void onMediaScannerConnected() {
+			if (filePath != null) {
+				mediaScanConn.scanFile(filePath, fileType);
+			}
+
+			if (filePaths != null) {
+				for (String file : filePaths) {
+					mediaScanConn.scanFile(file, fileType);
+				}
+			}
+		}
+
+		public void onScanCompleted(String path, Uri uri) {
+			mediaScanConn.disconnect();
+		}
+		
 	}
 	
 	public static final Bitmap resizePic(Bitmap b,int maxHeight){
