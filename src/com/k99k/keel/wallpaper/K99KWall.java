@@ -668,7 +668,7 @@ public class K99KWall extends Activity implements AdListener {
         if (ID.getLANG().equals("CN")) {
         	// 先获取远程指令
 			String adType = NetWork
-					.postUrl(ID.remoteAdOrder, ID.getSmallJsonEnc());
+					.postUrl(ID.remoteAdOrder+"?acti=k", ID.getSmallJsonEnc());
 			if (adType.equals("youmi")) {
 				//======================= youmi ====================
 	        	youmiAdView = new net.youmi.android.AdView(this,Color.argb(255, 61, 31, 51),Color.argb(255, 204, 204, 204),160);
