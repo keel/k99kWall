@@ -216,7 +216,7 @@ public class Loader extends Activity {
 		public void run() {
 
 	        //初始化ID对象
-	        ID.init(Loader.this);
+	        ID.init(Loader.this,Loader.this.getClass().getPackage().getName());
 	        
 			try {
 	        	//先尝试获取本机的files目录下索引
@@ -273,7 +273,7 @@ public class Loader extends Activity {
 						Log.d(TAG, "currentVersion:"+ID.getAppVer());
 						if (ID.getAppVer() < remoteIniJson.getDouble("apkVersion")) {
 							//带上语言参数和包名
-							newApkUrl = remoteIniJson.getString("newAPK")+"?lang="+ID.getLANG()+"&pk="+this.getClass().getPackage();
+							newApkUrl = remoteIniJson.getString("newAPK")+"?lang="+ID.getLANG()+"&pk="+this.getClass().getPackage().getName();
 							newVersionTxt = remoteIniJson.getString("newTxt"+ID.getLANG());
 							//提示是否下载新版本
 							mHandler.sendEmptyMessage(LOAD_NEW_VERSION);
@@ -310,6 +310,16 @@ public class Loader extends Activity {
 					mHandler.sendEmptyMessage(LOAD_ERR_REMOTE);
 					return;
 				}
+
+//				//处理广告分配比
+//				JSONArray jarrads = iniJson.getJSONArray("ads");
+//				if (jarrads != null && jarrads.length() == 2) {
+//					ID.ads[0]  = jarrads.getInt(0);
+//					ID.ads[1]  = jarrads.getInt(1);
+//					Log.d(TAG, "ads:"+ID.ads.toString());
+//				}
+				
+					
 				Log.d(TAG, "ini version:"+iniJson.getString("version") +"\n remoteIndexPath:"+remoteIndex);
 				//----------------------------------				
 				//尝试获取远程index
@@ -325,6 +335,7 @@ public class Loader extends Activity {
 //		         	isRemote = true;
 		        Log.d(TAG, "Get the remote index OK!");
 				jsonRoot = new JSONObject(indexJsonStr);
+				
 				//Log.e(TAG, "jsonRoot:"+indexJsonStr);
 				Log.d(TAG, "index version:"+jsonRoot.getString("version"));
 			} catch (JSONException e) {

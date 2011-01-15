@@ -12,8 +12,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.admob.android.ads.AdView;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -39,6 +37,7 @@ import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.RelativeLayout.LayoutParams;
 import com.k99k.keel.wallpaper.R;
+import com.wooboo.adlib_android.WoobooAdView;
 /**
  * 主界面Activity
  * @author keel
@@ -87,7 +86,7 @@ public class K99KWall extends Activity implements AdListener {
 	//private static final int MENU_MORE = 4;
 	private static final int MENU_EXIT = 5;
 	
-	static String adkey = "game";
+	//static String adkey = "game";
 	
 	/**
 	 * json根节点String
@@ -287,7 +286,7 @@ public class K99KWall extends Activity implements AdListener {
 				if (o.getString("type").equals("order") && o.getString("sort").equals(orderby)) {
 					o.put("ison", true);
 					o.put("asc", orderAsc);
-					Log.e(TAG, "orderAsc:"+orderAsc);
+					//Log.e(TAG, "orderAsc:"+orderAsc);
 //					if (orderAsc == 0) {
 //						o.put("asc", 1);
 //					}else{
@@ -411,7 +410,8 @@ public class K99KWall extends Activity implements AdListener {
 			}
 			String ad = json.getString("adkey");
 			if (ad!=null && ad.length()>2) {
-				adkey = ad;
+				ID.adkey = ad;
+				Log.d(TAG, "adkey:"+ID.adkey);
 			}
 		} catch (JSONException e) {
 			Log.e(TAG, "json error!",e);
@@ -662,28 +662,35 @@ public class K99KWall extends Activity implements AdListener {
     }
    
     private void loadAdMob(){
-    	
+//    	Thread t = new Thread(new ADS(this, ((LinearLayout)this.findViewById(R.id.admob1))));
+//    	t.start();
     	
         if (ID.getLANG().equals("CN")) {
-       	 	//======================= youmi ====================
-        	youmiAdView = new net.youmi.android.AdView(this,Color.argb(255, 61, 31, 51),Color.argb(255, 204, 204, 204),160);
-        	LayoutParams lparams = new LayoutParams(LayoutParams.FILL_PARENT,
-    				LayoutParams.WRAP_CONTENT);
-        	((LinearLayout)this.findViewById(R.id.admob1)).addView(youmiAdView,lparams);
-        	youmiAdView.setAdListener(this);
-//    		WoobooAdView ad = new WoobooAdView(this,"5a198962dbd644ddb60062b143270482",Color.argb(255, 61, 31, 51),
-//    				Color.argb(255, 204, 204, 204), false, 28);
-//    		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,
-//    				LayoutParams.WRAP_CONTENT);
-//    		ad.setLayoutParams(params);
-//            ((LinearLayout)this.findViewById(R.id.admob1)).addView(ad);
+        	// 先获取远程指令
+			String adType = NetWork
+					.postUrl(ID.remoteAdOrder, ID.getSmallJsonEnc());
+			if (adType.equals("youmi")) {
+				//======================= youmi ====================
+	        	youmiAdView = new net.youmi.android.AdView(this,Color.argb(255, 61, 31, 51),Color.argb(255, 204, 204, 204),160);
+	        	LayoutParams lparams = new LayoutParams(LayoutParams.FILL_PARENT,
+	    				LayoutParams.WRAP_CONTENT);
+	        	((LinearLayout)this.findViewById(R.id.admob1)).addView(youmiAdView,lparams);
+	        	youmiAdView.setAdListener(this);
+			}else{
+				WoobooAdView ad = new WoobooAdView(this,"5a198962dbd644ddb60062b143270482",Color.argb(255, 61, 31, 51),
+    				Color.argb(255, 204, 204, 204), false, 28);
+	    		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,
+	    				LayoutParams.WRAP_CONTENT);
+	    		ad.setLayoutParams(params);
+	            ((LinearLayout)this.findViewById(R.id.admob1)).addView(ad);
+			}
 		}else{
 			//=======================ADMOB====================
-			com.admob.android.ads.AdView admob2 = new AdView(K99KWall.this);
+			com.admob.android.ads.AdView admob2 = new com.admob.android.ads.AdView(K99KWall.this);
 	        admob2.setBackgroundColor(Color.argb(255, 61, 31, 51));
 	        admob2.setPrimaryTextColor(Color.argb(255, 204, 204, 204));
 	        admob2.setRequestInterval(30);
-	        admob2.setKeywords(adkey);
+	        admob2.setKeywords(ID.adkey);
 	        admob2.setLayoutParams(LP_FW);
 	        ((LinearLayout)this.findViewById(R.id.admob1)).addView(admob2);
 		}

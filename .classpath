@@ -5,5 +5,6 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="lib" path="F:/android/admob-sdk-android_20101109/admob-sdk-android.jar"/>
 	<classpathentry kind="lib" path="F:/android/UMAd_Android_SDK_2.1_2010-11-23/lib/youmiad-android.jar"/>
+	<classpathentry kind="lib" path="F:/android/Wooboo_Android_SDK1.1 (1)/Wooboo_Android_SDK1.1/adlib/adlib_android.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

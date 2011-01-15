@@ -11,6 +11,7 @@ import net.youmi.android.AdListener;
 
 import com.admob.android.ads.AdView;
 import com.k99k.keel.wallpaper.R;
+import com.wooboo.adlib_android.WoobooAdView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -140,30 +141,37 @@ public class ShowPic extends Activity implements AdListener {
 	};
 	
 	net.youmi.android.AdView youmiAdView;
-	
+	 
     private void loadAdMob(){
         if (ID.getLANG().equals("CN")) {
-    		
-      	 	//======================= youmi ====================
-        	youmiAdView = new net.youmi.android.AdView(this,Color.argb(255, 61, 31, 51),Color.argb(255, 204, 204, 204),160);
-        	LayoutParams lparams = new LayoutParams(LayoutParams.FILL_PARENT,
-    				LayoutParams.WRAP_CONTENT);
-        	((LinearLayout)this.findViewById(R.id.admob1)).addView(youmiAdView,lparams);
-        	youmiAdView.setAdListener(this);
-        	
-//    		WoobooAdView ad = new WoobooAdView(this,"5a198962dbd644ddb60062b143270482",Color.argb(255, 61, 31, 51),
-//    				Color.argb(255, 204, 204, 204), false, 28);
-//    		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,
-//    				LayoutParams.WRAP_CONTENT);
-//    		ad.setLayoutParams(params);
-//            ((LinearLayout)this.findViewById(R.id.SetWall)).addView(ad);
+        	// 先获取远程指令
+			String adType = NetWork
+					.postUrl(ID.remoteAdOrder, ID.getSmallJsonEnc());
+			if (adType.equals("youmi")) {
+	      	 	//======================= youmi ====================
+	        	youmiAdView = new net.youmi.android.AdView(this,Color.argb(255, 61, 31, 51),Color.argb(255, 204, 204, 204),160);
+	        	LayoutParams lparams = new LayoutParams(LayoutParams.FILL_PARENT,
+	    				LayoutParams.WRAP_CONTENT);
+	        	((LinearLayout)this.findViewById(R.id.SetWall)).addView(youmiAdView,lparams);
+	        	youmiAdView.setAdListener(this);
+	        					
+			}else{
+	    		WoobooAdView ad = new WoobooAdView(this,"5a198962dbd644ddb60062b143270482",Color.argb(255, 61, 31, 51),
+	    				Color.argb(255, 204, 204, 204), false, 28);
+	    		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,
+	    				LayoutParams.WRAP_CONTENT);
+	    		ad.setLayoutParams(params);
+	            ((LinearLayout)this.findViewById(R.id.SetWall)).addView(ad);				
+			}
+
+
 		}else{
 			//=======================ADMOB====================
 			com.admob.android.ads.AdView admob2 = new AdView(ShowPic.this);
 	        admob2.setBackgroundColor(Color.argb(255, 61, 31, 51));
 	        admob2.setPrimaryTextColor(Color.argb(255, 204, 204, 204));
 	        admob2.setRequestInterval(30);
-	        admob2.setKeywords(K99KWall.adkey);
+	        admob2.setKeywords(ID.adkey);
 	        admob2.setLayoutParams(LP_FW);
 	        ((LinearLayout)this.findViewById(R.id.SetWall)).addView(admob2);
 		}

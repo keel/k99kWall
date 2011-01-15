@@ -4,8 +4,6 @@
 package com.k99k.keel.wallpaper;
 
 
-import java.util.Date;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -62,6 +60,17 @@ public final class ID {
 	private static int screenWidth = 0;
 	private static int screenHeight = 0;
 	private static float screenDpi = 0;
+	
+	/**
+	 * 包名
+	 */
+	public static String PACKAGE = "com.k99k.keel.wallpaper";
+	
+	/**
+	 * 获取广告参数的地址
+	 */
+	public static final String remoteAdOrder = "getadtype";
+	
 	/**
 	 * app版本
 	 */
@@ -111,14 +120,19 @@ public final class ID {
 		lang  = newLang;
 	}
 	
+//	/**
+//	 * 广告的分配,wooboo/youmi
+//	 */
+//	public static int[] ads = new int[]{70,30};
 	
-	
+	public static String adkey = "game movie";
 	
 	/**
 	 * 初始化,务必保证此方法先执行 
 	 * @param activity Activity
 	 */
-	public static final void init(Activity activity){
+	public static final void init(Activity activity,String packageStr){
+		PACKAGE = packageStr;
 		//这里通过在strings.xml的不同语言参数实现,所以需要在不同的语言文件夹中配置对应的lang参数
 		lang = activity.getString(R.string.lang);
 		//这里有另一种方法，未确认
@@ -165,6 +179,7 @@ public final class ID {
 		fullIdJson = new JSONObject();
 		try {
 			//smallIdJson
+			smallIdJson.put("pk", PACKAGE);
 			smallIdJson.put("lang", lang);
 			smallIdJson.put("imei", imei);
 			smallIdJson.put("appVersion", appVer);
@@ -191,6 +206,7 @@ public final class ID {
 //			osJson.put("TYPE", TYPE);
 //			osJson.put("USER", USER);
 			//fullIdJson
+			fullIdJson.put("pk", PACKAGE);
 			fullIdJson.put("lang", lang);
 			fullIdJson.put("imei", imei);
 			fullIdJson.put("imsi", imsi);
@@ -279,7 +295,7 @@ public final class ID {
 	public static final String getFullJsonEnc(){
 		
 		try {
-			fullIdJson.put("time", System.currentTimeMillis());
+			fullIdJson.put("time",System.currentTimeMillis());
 			//String s = encrypt(fullIdJson.toString());
 			//Log.e(TAG, " getFullJsonEnc:"+decrypt(s));
 			//return s;
