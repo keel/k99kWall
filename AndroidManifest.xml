@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      android:versionCode="15"
-      android:versionName="2.4.2" package="com.k99k.keel.wallpaper">
+      android:versionCode="17"
+      android:versionName="2.4.3" package="com.k99k.keel.wallpaper">
 <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 <uses-permission android:name="android.permission.SET_WALLPAPER"></uses-permission>
@@ -26,12 +26,24 @@
         <activity android:name=".StarActivity" android:label=""
                 android:theme="@style/BlackTheme.starDialog">
         </activity>
+        
         <!-- 切换广告需要更改四处:1.本文件;2.main.xml;3.showpic.xml;4.attrs.xml 最后需要切换相关的jar包,记得将test改为false-->    
-
+       
+        <activity android:name="com.admob.android.ads.AdMobActivity" 
+              android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+              android:configChanges="orientation|keyboard|keyboardHidden"
+              />
+		<!-- Track Market installs from AdMob ads -->		
+		<receiver android:name="com.admob.android.ads.analytics.InstallReceiver" android:exported="true">
+			<intent-filter>
+				<action android:name="com.android.vending.INSTALL_REFERRER" />
+			</intent-filter>
+		</receiver>
+	<meta-data android:value="a14bb2d2d06f792" android:name="ADMOB_PUBLISHER_ID" />
+	
    	<meta-data android:value="5a198962dbd644ddb60062b143270482" android:name="Wooboo_PID"/>
 	<meta-data android:value="2" android:name="Market_ID"/>
 
-    <meta-data android:value="a14bb2d2d06f792" android:name="ADMOB_PUBLISHER_ID" />
 
  	</application>
 	<supports-screens

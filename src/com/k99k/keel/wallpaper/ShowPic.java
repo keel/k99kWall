@@ -643,7 +643,7 @@ public class ShowPic extends Activity implements AdListener {
 				picHandler.post(new Runnable() {
 					public void run() {
 						if (b == null) {
-							showDialog(DIALOG_ERR_WEBPIC_404);
+							ShowPic.this.showDialog(DIALOG_ERR_WEBPIC_404);
 						}else{
 							picToSave = b;;
 							//bigImgView.setImageBitmap(resizePic(b));
