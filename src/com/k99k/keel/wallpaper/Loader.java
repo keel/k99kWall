@@ -323,7 +323,16 @@ public class Loader extends Activity {
 				Log.d(TAG, "ini version:"+iniJson.getString("version") +"\n remoteIndexPath:"+remoteIndex);
 				//----------------------------------				
 				//尝试获取远程index
-				indexJsonStr = NetWork.postUrl(remoteIndex,ID.getSmallJsonEnc());
+				String reIndexFileName = remoteIndex.substring(remoteIndex.lastIndexOf('/')+1);
+				String reIndex = NetWork.getServer()+reIndexFileName;
+				for (int i = 0; i < len; i++) {
+					//postUrl如果失败会自动切换server
+					indexJsonStr = NetWork.postUrl(reIndex,ID.getSmallJsonEnc());
+					if (indexJsonStr.equals("")) {
+						continue;
+					}
+				}
+				//indexJsonStr = NetWork.postUrl(remoteIndex,ID.getSmallJsonEnc());
 				if (indexJsonStr.equals("")) {
 					//无法获取远程index
 					mHandler.sendEmptyMessage(LOAD_ERR_REMOTE);
