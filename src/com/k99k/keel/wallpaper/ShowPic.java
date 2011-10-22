@@ -7,9 +7,8 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.youmi.android.AdListener;
 
-import com.admob.android.ads.AdView;
+import com.google.ads.AdView;
 import com.k99k.keel.wallpaper.R;
 import com.wooboo.adlib_android.WoobooAdView;
 
@@ -44,7 +43,7 @@ import android.widget.RelativeLayout.LayoutParams;
  * @author keel
  *
  */
-public class ShowPic extends Activity implements AdListener {
+public class ShowPic extends Activity{
 	
 	private static final int DIALOG_ERR_WEBPIC_404 = 2;
 	private static final int DIALOG_ERR_NOSDCARD = 3;
@@ -153,11 +152,10 @@ public class ShowPic extends Activity implements AdListener {
 	        	LayoutParams lparams = new LayoutParams(LayoutParams.FILL_PARENT,
 	    				LayoutParams.WRAP_CONTENT);
 	        	((LinearLayout)this.findViewById(R.id.SetWall)).addView(youmiAdView,lparams);
-	        	youmiAdView.setAdListener(this);
 	        					
 			}else{
-	    		WoobooAdView ad = new WoobooAdView(this,"5a198962dbd644ddb60062b143270482",Color.argb(255, 61, 31, 51),
-	    				Color.argb(255, 204, 204, 204), false, 28);
+	    		WoobooAdView ad = new WoobooAdView(this,Color.argb(255, 61, 31, 51),
+	    				Color.argb(255, 204, 204, 204), false, 60,null);
 	    		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,
 	    				LayoutParams.WRAP_CONTENT);
 	    		ad.setLayoutParams(params);
@@ -167,13 +165,14 @@ public class ShowPic extends Activity implements AdListener {
 
 		}else{
 			//=======================ADMOB====================
-			com.admob.android.ads.AdView admob2 = new AdView(ShowPic.this);
+			AdView admob2 = new AdView(ShowPic.this,com.google.ads.AdSize.BANNER,"a14bb2d2d06f792");
 	        admob2.setBackgroundColor(Color.argb(255, 61, 31, 51));
-	        admob2.setPrimaryTextColor(Color.argb(255, 204, 204, 204));
-	        admob2.setRequestInterval(30);
-	        admob2.setKeywords(ID.adkey);
+//	        admob2.setPrimaryTextColor(Color.argb(255, 204, 204, 204));
+//	        admob2.setRequestInterval(30);
+//	        admob2.setKeywords(ID.adkey);
 	        admob2.setLayoutParams(LP_FW);
 	        ((LinearLayout)this.findViewById(R.id.SetWall)).addView(admob2);
+	        admob2.loadAd(new com.google.ads.AdRequest());
 		}
     }
     private static final RelativeLayout.LayoutParams LP_FW = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);  
@@ -769,12 +768,4 @@ public class ShowPic extends Activity implements AdListener {
 		}  
 	}
 
-	public void onConnectFailed() {
-		
-	}
-
-	public void onReceiveAd() {
-		
-	}
-	
 }

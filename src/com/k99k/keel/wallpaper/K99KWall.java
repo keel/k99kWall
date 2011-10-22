@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-import net.youmi.android.AdListener;
 import net.youmi.android.AdManager;
 
 import org.json.JSONArray;
@@ -43,13 +42,12 @@ import com.wooboo.adlib_android.WoobooAdView;
  * @author keel
  *
  */
-public class K99KWall extends Activity implements AdListener {
+public class K99KWall extends Activity{
 	
 	private static final String TAG  ="K99KWall";
 	net.youmi.android.AdView youmiAdView;
 	static {
-		AdManager.init("6bcc694597cf55ce", "4507d8bd601d6728", 30, false,
-				"2.4");
+		AdManager.init("6bcc694597cf55ce", "4507d8bd601d6728", 30, false);
 	}
 	
 	private Button b_new;
@@ -675,10 +673,9 @@ public class K99KWall extends Activity implements AdListener {
 	        	LayoutParams lparams = new LayoutParams(LayoutParams.FILL_PARENT,
 	    				LayoutParams.WRAP_CONTENT);
 	        	((LinearLayout)this.findViewById(R.id.admob1)).addView(youmiAdView,lparams);
-	        	youmiAdView.setAdListener(this);
 			}else{
-				WoobooAdView ad = new WoobooAdView(this,"5a198962dbd644ddb60062b143270482",Color.argb(255, 61, 31, 51),
-    				Color.argb(255, 204, 204, 204), false, 28);
+				WoobooAdView ad = new WoobooAdView(this,Color.argb(255, 61, 31, 51),
+    				Color.argb(255, 204, 204, 204), false, 60,null);
 	    		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,
 	    				LayoutParams.WRAP_CONTENT);
 	    		ad.setLayoutParams(params);
@@ -686,13 +683,14 @@ public class K99KWall extends Activity implements AdListener {
 			}
 		}else{
 			//=======================ADMOB====================
-			com.admob.android.ads.AdView admob2 = new com.admob.android.ads.AdView(K99KWall.this);
+			com.google.ads.AdView admob2 = new com.google.ads.AdView(K99KWall.this,com.google.ads.AdSize.BANNER,"a14bb2d2d06f792");
 	        admob2.setBackgroundColor(Color.argb(255, 61, 31, 51));
-	        admob2.setPrimaryTextColor(Color.argb(255, 204, 204, 204));
-	        admob2.setRequestInterval(30);
-	        admob2.setKeywords(ID.adkey);
+//	        admob2.setPrimaryTextColor(Color.argb(255, 204, 204, 204));
+//	        admob2.setRequestInterval(30);
+//	        admob2.setKeywords(ID.adkey);
 	        admob2.setLayoutParams(LP_FW);
 	        ((LinearLayout)this.findViewById(R.id.admob1)).addView(admob2);
+	        admob2.loadAd(new com.google.ads.AdRequest());
 		}
     }
   
@@ -1329,12 +1327,6 @@ public class K99KWall extends Activity implements AdListener {
 			//fitSize();
 		}  
 	}
-public void onConnectFailed() {
-	
-}
-public void onReceiveAd() {
-	
-}
 	
 	
 }

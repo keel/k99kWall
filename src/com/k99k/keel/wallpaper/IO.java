@@ -139,11 +139,14 @@ public final class IO {
 
 			//如果SD卡未挂载
 			boolean sdcardIn = true;
+			
+			File sd = android.os.Environment.getExternalStorageDirectory();
+			
 //			if (android.os.Environment.getExternalStorageState() != android.os.Environment.MEDIA_MOUNTED) {
 //				sdcardIn = false;
 //			}
 //			Log.e(TAG, "sdcardIn:"+sdcardIn);
-			File sd = new File("/sdcard");
+			//File sd = new File("/sdcard");
 			if (!sd.canWrite()) {
 				sdcardIn = false;
 			}
@@ -155,6 +158,12 @@ public final class IO {
 			//FileOutputStream out = this.openFileOutput(fileName, MODE_WORLD_READABLE);//这是保存到/data/package下面，不能定义位置
 			//File f = new File(savePath);
 			//if (!f.exists()) {
+			int isS = savePath.indexOf("sdcard");
+			if (isS>=0) {
+				savePath = sd.getPath()+savePath.substring(isS+6);
+			}
+			
+			//Log.e(TAG, "savePath:"+savePath);
 			(new File(savePath)).mkdirs();
 			//}
 			//File file = new File(savePath+fileName);
@@ -202,6 +211,7 @@ public final class IO {
   		String[] filePaths = null;
   		
 		public void onMediaScannerConnected() {
+			
 			if (filePath != null) {
 				mediaScanConn.scanFile(filePath, fileType);
 			}
@@ -214,6 +224,7 @@ public final class IO {
 		}
 
 		public void onScanCompleted(String path, Uri uri) {
+			Log.i(TAG, "scan media complet:"+path+" uri:"+uri.toString());
 			mediaScanConn.disconnect();
 		}
 		

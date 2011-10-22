@@ -3,8 +3,8 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry kind="lib" path="F:/android/admob-sdk-android_20101109/admob-sdk-android.jar"/>
-	<classpathentry kind="lib" path="F:/android/UMAd_Android_SDK_2.1_2010-11-23/lib/youmiad-android.jar"/>
-	<classpathentry kind="lib" path="F:/android/Wooboo_Android_SDK1.1 (1)/Wooboo_Android_SDK1.1/adlib/adlib_android.jar"/>
+	<classpathentry kind="lib" path="F:/android/googleadmobadssdkandroid/GoogleAdMobAdsSdkAndroid-4.1.1/GoogleAdMobAdsSdk-4.1.1.jar"/>
+	<classpathentry kind="lib" path="F:/android/youmi-android-sdk-v3.03_2011-9-30/lib/youmi-android-v3.03_2011-9-30.jar"/>
+	<classpathentry kind="lib" path="F:/android/Wooboo_SDK_2.0_Android/wooboo原版/adlib_android.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

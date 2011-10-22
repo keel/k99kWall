@@ -14,9 +14,10 @@
     
 <Button android:layout_width="wrap_content" android:layout_height="wrap_content" 
 android:text="  Enter  " android:id="@+id/enter" style="@style/BlackTheme.enterButton"></Button>
+	 
 	<TextView 
        android:id="@+id/k99k" android:layout_height="wrap_content" android:layout_width="wrap_content" 
-       android:text="WWW.K99K.COM" 
+       android:text=" " 
        android:layout_marginTop="15dip" android:textSize="10sp"/>
 	<TextView 
        android:id="@+id/ver" android:layout_height="wrap_content" android:layout_width="wrap_content" 
