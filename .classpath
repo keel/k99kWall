@@ -5,6 +5,6 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="lib" path="F:/android/googleadmobadssdkandroid/GoogleAdMobAdsSdkAndroid-4.1.1/GoogleAdMobAdsSdk-4.1.1.jar"/>
 	<classpathentry kind="lib" path="F:/android/youmi-android-sdk-v3.03_2011-9-30/lib/youmi-android-v3.03_2011-9-30.jar"/>
-	<classpathentry kind="lib" path="F:/android/Wooboo_SDK_2.0_Android/wooboo原版/adlib_android.jar"/>
+	<classpathentry kind="lib" path="F:/android/Wooboo_SDK_2.1_Android/wooboo原版/adlib_android.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -45,7 +45,7 @@
 	<activity android:name="net.youmi.android.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation" />
 	 <meta-data android:name="YOUMI_CHANNEL" android:value="10000"></meta-data>
 	 
-   	<meta-data android:value="5a198962dbd644ddb60062b143270482" android:name="Wooboo_PID"/>
+   	<meta-data android:value="ba479052e814491a8bd0bb44a4a964c7" android:name="Wooboo_PID"/>
 	<meta-data android:value="2" android:name="Market_ID"/>
 	<activity android:name="com.wooboo.adlib_android.AdActivity" 
 	android:configChanges="orientation|keyboardHidden" 

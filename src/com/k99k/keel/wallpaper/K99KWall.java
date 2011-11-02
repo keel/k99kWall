@@ -47,7 +47,7 @@ public class K99KWall extends Activity{
 	private static final String TAG  ="K99KWall";
 	net.youmi.android.AdView youmiAdView;
 	static {
-		AdManager.init("6bcc694597cf55ce", "4507d8bd601d6728", 30, false);
+		AdManager.init("eee582e1a31adb78", "d0b859c53171a4b2", 30, false);
 	}
 	
 	private Button b_new;
@@ -675,7 +675,7 @@ public class K99KWall extends Activity{
 	        	((LinearLayout)this.findViewById(R.id.admob1)).addView(youmiAdView,lparams);
 			}else{
 				WoobooAdView ad = new WoobooAdView(this,Color.argb(255, 61, 31, 51),
-    				Color.argb(255, 204, 204, 204), false, 60,null);
+    				Color.argb(255, 204, 204, 204), false, 40,null);
 	    		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,
 	    				LayoutParams.WRAP_CONTENT);
 	    		ad.setLayoutParams(params);

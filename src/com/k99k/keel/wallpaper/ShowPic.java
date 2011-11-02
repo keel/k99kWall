@@ -155,7 +155,7 @@ public class ShowPic extends Activity{
 	        					
 			}else{
 	    		WoobooAdView ad = new WoobooAdView(this,Color.argb(255, 61, 31, 51),
-	    				Color.argb(255, 204, 204, 204), false, 60,null);
+	    				Color.argb(255, 204, 204, 204), false, 40,null);
 	    		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,
 	    				LayoutParams.WRAP_CONTENT);
 	    		ad.setLayoutParams(params);
